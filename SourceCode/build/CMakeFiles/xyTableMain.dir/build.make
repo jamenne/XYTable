@@ -95,17 +95,70 @@ CMakeFiles/xyTableMain.dir/MotorControl.cpp.o.provides: CMakeFiles/xyTableMain.d
 
 CMakeFiles/xyTableMain.dir/MotorControl.cpp.o.provides.build: CMakeFiles/xyTableMain.dir/MotorControl.cpp.o
 
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o: CMakeFiles/xyTableMain.dir/flags.make
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o: /home/laborlinux/src/SpectrometerClass/Spectrometer.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o -c /home/laborlinux/src/SpectrometerClass/Spectrometer.cpp
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/laborlinux/src/SpectrometerClass/Spectrometer.cpp > CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.i
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/laborlinux/src/SpectrometerClass/Spectrometer.cpp -o CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.s
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o.requires:
+.PHONY : CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o.requires
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o.provides: CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o.requires
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o.provides.build
+.PHONY : CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o.provides
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o.provides.build: CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o: CMakeFiles/xyTableMain.dir/flags.make
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o: /home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o -c /home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp > CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.i
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp -o CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.s
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o.requires:
+.PHONY : CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o.requires
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o.provides: CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o.requires
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o.provides.build
+.PHONY : CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o.provides
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o.provides.build: CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o
+
 # Object files for target xyTableMain
 xyTableMain_OBJECTS = \
 "CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o" \
-"CMakeFiles/xyTableMain.dir/MotorControl.cpp.o"
+"CMakeFiles/xyTableMain.dir/MotorControl.cpp.o" \
+"CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o" \
+"CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o"
 
 # External object files for target xyTableMain
 xyTableMain_EXTERNAL_OBJECTS =
 
 bin/xyTableMain: CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o
 bin/xyTableMain: CMakeFiles/xyTableMain.dir/MotorControl.cpp.o
+bin/xyTableMain: CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o
+bin/xyTableMain: CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o
 bin/xyTableMain: CMakeFiles/xyTableMain.dir/build.make
+bin/xyTableMain: /usr/lib/x86_64-linux-gnu/libboost_system.so
+bin/xyTableMain: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+bin/xyTableMain: /usr/lib/x86_64-linux-gnu/libboost_regex.so
 bin/xyTableMain: CMakeFiles/xyTableMain.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable bin/xyTableMain"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/xyTableMain.dir/link.txt --verbose=$(VERBOSE)
@@ -116,6 +169,8 @@ CMakeFiles/xyTableMain.dir/build: bin/xyTableMain
 
 CMakeFiles/xyTableMain.dir/requires: CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o.requires
 CMakeFiles/xyTableMain.dir/requires: CMakeFiles/xyTableMain.dir/MotorControl.cpp.o.requires
+CMakeFiles/xyTableMain.dir/requires: CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o.requires
+CMakeFiles/xyTableMain.dir/requires: CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o.requires
 .PHONY : CMakeFiles/xyTableMain.dir/requires
 
 CMakeFiles/xyTableMain.dir/clean:

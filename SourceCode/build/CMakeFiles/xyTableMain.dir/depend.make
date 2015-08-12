@@ -5,6 +5,13 @@ CMakeFiles/xyTableMain.dir/MotorControl.cpp.o: ../MotorControl.cpp
 CMakeFiles/xyTableMain.dir/MotorControl.cpp.o: ../MotorControl.h
 CMakeFiles/xyTableMain.dir/MotorControl.cpp.o: ../RS232communication.hpp
 
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o: /home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o: /home/laborlinux/src/SpectrometerClass/Spectrometer.h
+
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o: /home/laborlinux/src/SpectrometerClass/Spectrometer.cpp
+CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o: /home/laborlinux/src/SpectrometerClass/Spectrometer.h
+
+CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o: /home/laborlinux/src/SpectrometerClass/SpecMeasurement.h
 CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o: /home/laborlinux/src/SpectrometerClass/Spectrometer.h
 CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o: ../MotorControl.h
 CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o: ../xyTableMain.cpp

@@ -5,6 +5,8 @@ SET(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/laborlinux/src/XYTable/XYTable/SourceCode/MotorControl.cpp" "/home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles/xyTableMain.dir/MotorControl.cpp.o"
+  "/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp" "/home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o"
+  "/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp" "/home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o"
   "/home/laborlinux/src/XYTable/XYTable/SourceCode/xyTableMain.cpp" "/home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")

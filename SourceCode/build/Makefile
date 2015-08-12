@@ -135,6 +135,54 @@ MotorControl.cpp.s:
 	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/MotorControl.cpp.s
 .PHONY : MotorControl.cpp.s
 
+home/laborlinux/src/SpectrometerClass/SpecMeasurement.o: home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o
+.PHONY : home/laborlinux/src/SpectrometerClass/SpecMeasurement.o
+
+# target to build an object file
+home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o
+.PHONY : home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o
+
+home/laborlinux/src/SpectrometerClass/SpecMeasurement.i: home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.i
+.PHONY : home/laborlinux/src/SpectrometerClass/SpecMeasurement.i
+
+# target to preprocess a source file
+home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.i:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.i
+.PHONY : home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.i
+
+home/laborlinux/src/SpectrometerClass/SpecMeasurement.s: home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.s
+.PHONY : home/laborlinux/src/SpectrometerClass/SpecMeasurement.s
+
+# target to generate assembly for a file
+home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.s:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.s
+.PHONY : home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.s
+
+home/laborlinux/src/SpectrometerClass/Spectrometer.o: home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o
+.PHONY : home/laborlinux/src/SpectrometerClass/Spectrometer.o
+
+# target to build an object file
+home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o
+.PHONY : home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o
+
+home/laborlinux/src/SpectrometerClass/Spectrometer.i: home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.i
+.PHONY : home/laborlinux/src/SpectrometerClass/Spectrometer.i
+
+# target to preprocess a source file
+home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.i:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.i
+.PHONY : home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.i
+
+home/laborlinux/src/SpectrometerClass/Spectrometer.s: home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.s
+.PHONY : home/laborlinux/src/SpectrometerClass/Spectrometer.s
+
+# target to generate assembly for a file
+home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.s:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.s
+.PHONY : home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.s
+
 xyTableMain.o: xyTableMain.cpp.o
 .PHONY : xyTableMain.o
 
@@ -171,6 +219,12 @@ help:
 	@echo "... MotorControl.o"
 	@echo "... MotorControl.i"
 	@echo "... MotorControl.s"
+	@echo "... home/laborlinux/src/SpectrometerClass/SpecMeasurement.o"
+	@echo "... home/laborlinux/src/SpectrometerClass/SpecMeasurement.i"
+	@echo "... home/laborlinux/src/SpectrometerClass/SpecMeasurement.s"
+	@echo "... home/laborlinux/src/SpectrometerClass/Spectrometer.o"
+	@echo "... home/laborlinux/src/SpectrometerClass/Spectrometer.i"
+	@echo "... home/laborlinux/src/SpectrometerClass/Spectrometer.s"
 	@echo "... xyTableMain.o"
 	@echo "... xyTableMain.i"
 	@echo "... xyTableMain.s"

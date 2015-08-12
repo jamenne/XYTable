@@ -1,6 +1,8 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o"
   "CMakeFiles/xyTableMain.dir/MotorControl.cpp.o"
+  "CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/Spectrometer.cpp.o"
+  "CMakeFiles/xyTableMain.dir/home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o"
   "bin/xyTableMain.pdb"
   "bin/xyTableMain"
 )

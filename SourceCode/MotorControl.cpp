@@ -54,7 +54,7 @@ void MotorControl::ConnectMotor(bool verbosity, vector<int> &Motor){
 					}
 				else{
 					Motor.push_back(Motor_handle[a]);
-					cout << Motor_handle[a] << endl;
+					//cout << Motor_handle[a] << endl;
 					cout << "Motor " << a+1 << " OK." << endl;
 				}
 		}

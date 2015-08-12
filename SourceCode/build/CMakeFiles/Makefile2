@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/laborlinux/src/XYTable/XYTable/SourceCode/build
 CMakeFiles/xyTableMain.dir/all:
 	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/depend
 	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles  1 2
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles  1 2 3 4
 	@echo "Built target xyTableMain"
 .PHONY : CMakeFiles/xyTableMain.dir/all
 
@@ -69,7 +69,7 @@ all: CMakeFiles/xyTableMain.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/xyTableMain.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/xyTableMain.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/laborlinux/src/XYTable/XYTable/SourceCode/build/CMakeFiles 0
 .PHONY : CMakeFiles/xyTableMain.dir/rule

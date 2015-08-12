@@ -40,8 +40,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-add_executable( xyTableMain xyTableMain.cpp MotorControl.cpp RS232communication.hpp)
-#add_executable(SpectrometerMain SpectrometerMain.cpp Spectrometer.cpp)
-#target_link_libraries( SpectrometerMain ${Boost_LIBRARIES})
+add_executable( xyTableMain xyTableMain.cpp MotorControl.cpp RS232communication.hpp /home/laborlinux/src/SpectrometerClass/Spectrometer.cpp /home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp)
+target_link_libraries( xyTableMain ${Boost_LIBRARIES})
 #target_link_libraries( xyTableMain ${LIBRARIES})
 
