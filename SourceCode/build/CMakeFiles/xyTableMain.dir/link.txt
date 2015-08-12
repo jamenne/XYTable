@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++0x -pedantic -Wall -Wextra    CMakeFiles/xyTableMain.dir/xyTableMain.cpp.o CMakeFiles/xyTableMain.dir/MotorControl.cpp.o  -o bin/xyTableMain -rdynamic 

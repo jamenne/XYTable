@@ -9,15 +9,16 @@ set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 
 # ROOT, a library for HEP data analysis (contains RooFit)
-#find_package(ROOT REQUIRED)
-#include_directories(${ROOT_INCLUDE_DIR})
-#set(LIBRARIES ${LIBRARIES} ${ROOT_LIBRARIES})
-#set(LIBRARIES ${LIBRARIES} ${ROOFIT_LIBRARIES})
+find_package(ROOT REQUIRED)
+include_directories(${ROOT_INCLUDE_DIR})
+set(LIBRARIES ${LIBRARIES} ${ROOT_LIBRARIES})
+set(LIBRARIES ${LIBRARIES} ${ROOFIT_LIBRARIES})
 
+# BOOST
 set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
-find_package(Boost 1.58.0 COMPONENTS system filesystem regex REQUIRED) 
+find_package(Boost 1.54.0 COMPONENTS system filesystem regex REQUIRED) 
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS}) 
@@ -39,8 +40,8 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-#add_executable( xyTableMain xyTableMain.cpp Motorcontrol.cpp RS232communication.hpp Spectrometer.cpp)
-add_executable(SpectrometerMain SpectrometerMain.cpp Spectrometer.cpp)
-target_link_libraries( SpectrometerMain ${Boost_LIBRARIES})
+add_executable( xyTableMain xyTableMain.cpp MotorControl.cpp RS232communication.hpp)
+#add_executable(SpectrometerMain SpectrometerMain.cpp Spectrometer.cpp)
+#target_link_libraries( SpectrometerMain ${Boost_LIBRARIES})
 #target_link_libraries( xyTableMain ${LIBRARIES})
 

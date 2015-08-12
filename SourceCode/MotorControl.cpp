@@ -28,7 +28,7 @@ void MotorControl::CheckComports(){
 
 }
 
-void MotorControl::ConnectMotor(bool verbosity, vector<int> Motor){
+void MotorControl::ConnectMotor(bool verbosity, vector<int> &Motor){
 
 	int n=number_of_comports();
 	unsigned char Address, Status;
@@ -66,57 +66,56 @@ void MotorControl::ConnectMotor(bool verbosity, vector<int> Motor){
 		default: cout << Motor.size() << " Motors detected." << endl; break;
 	}
 
-
 }
 
-void MotorControl::ReferenceRunX(int Motor, unsigned char Address, unsigned char Status, int Value){
+void MotorControl::ReferenceRunX(vector<int> &Motor, unsigned char Address, unsigned char Status, int Value){
 
 	//Parameters maybe have to be adjusted
 
 	//Settings for the x-axis
 	//Enable end switches 
-	SendCmd(Motor, 1, TMCL_SAP, 12, 0, 0);
-	GetResult(Motor, &Address, &Status, &Value);
-	SendCmd(Motor, 1, TMCL_SAP, 13, 0, 0);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 12, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 13, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	//Referencing search mode
 	//1 – Only the left reference switch is searched.
 	//2 – The right switch is searched, then the left switch is searched.
 	//3 – Three-switch-mode: the right switch is searched first, then the reference switch will be searched.
-	SendCmd(Motor, 1, TMCL_SAP, 193, 0, 2);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 193, 0, 2);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	//Max. current; TMC109 max. 255 
-	SendCmd(Motor, 1, TMCL_SAP, 6, 0, 200);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 6, 0, 200);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	//Max. acceleration
-	SendCmd(Motor, 1, TMCL_SAP, 5, 0, 5);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 5, 0, 5);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	//Max. speed
-	SendCmd(Motor, 1, TMCL_SAP, 4, 0, 200);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 4, 0, 200);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	//Min. speed
-	SendCmd(Motor, 1, TMCL_SAP, 130, 0, 1);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 130, 0, 1);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	//Disable soft stop, the motor will stop immediately (disregarding motor limits), when the reference or limit switch is hit.
-	SendCmd(Motor, 1, TMCL_SAP, 149, 0, 0);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 149, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	//Referencing search speed (0-full speed, 1-half of max.,...)
-	SendCmd(Motor, 1, TMCL_SAP, 194, 0, 0);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 194, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	//Reference switch speed (0-8), the speed for the switching point calibration can be selected
-	SendCmd(Motor, 1, TMCL_SAP, 195, 0, 8);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 195, 0, 8);
+	GetResult(Motor[0], &Address, &Status, &Value);
 	sleep(1);
 
 
 	//Reference Run
-	SendCmd(Motor, 1, TMCL_RFS, RFS_START, 0, 0);
-	GetResult(Motor, &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_RFS, RFS_START, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
 
 
 }
 
-void MotorControl::ReferenceRunY(int Motor, unsigned char Address, unsigned char Status, int Value){
+void MotorControl::ReferenceRunY(vector<int> &Motor, unsigned char Address, unsigned char Status, int Value){
 
 	//Parameters maybe have to be adjusted
 
@@ -162,23 +161,66 @@ void MotorControl::ReferenceRunY(int Motor, unsigned char Address, unsigned char
 
 }
 
-void MotorControl::MoveRelative(int Motor, int pos, unsigned char Address, unsigned char Status, int Value, int speed){
+void MotorControl::MoveRelative(vector<int> &Motor, string xy, int pos, unsigned char Address, unsigned char Status, int Value, int speed){
 
-	SendCmd(Motor, 1, TMCL_SAP, 4, 0, speed);		
-	SendCmd(Motor, 1, TMCL_MVP, MVP_REL, 0, pos);
-	GetResult(Motor, &Address, &Status, &Value);
-	sleep(4);
+	if (xy=="x" || xy=="X"){
+
+		SendCmd(Motor[0], 1, TMCL_SAP, 4, 0, speed);		
+		SendCmd(Motor[0], 1, TMCL_MVP, MVP_REL, 0, pos);
+		GetResult(Motor[0], &Address, &Status, &Value);
+		sleep(4);
+	}
+
+	if (xy=="y" || xy =="Y")
+	{
+		SendCmd(Motor[1], 1, TMCL_SAP, 4, 0, speed);		
+		SendCmd(Motor[1], 1, TMCL_MVP, MVP_REL, 0, pos);
+		GetResult(Motor[1], &Address, &Status, &Value);
+		sleep(4);
+	}
+
+	if(xy != "y" && xy != "Y" && xy != "x" && xy != "X"){
+		cout << "Wrong parameter for xy used" << endl;
+	}
 }
 
-void MotorControl::MoveAbsolute(int Motor, int pos, unsigned char Address, unsigned char Status, int Value, int speed){
+void MotorControl::MoveAbsolute(vector<int> &Motor, string xy, int pos, unsigned char Address, unsigned char Status, int Value, int speed){
 
-	SendCmd(Motor, 1, TMCL_SAP, 4, 0, speed);			
-	SendCmd(Motor, 1, TMCL_MVP, MVP_ABS, 0, pos);
-	GetResult(Motor, &Address, &Status, &Value);
-	sleep(4);
+
+	if (xy=="x" || xy=="X")
+	{
+		SendCmd(Motor[0], 1, TMCL_SAP, 4, 0, speed);			
+		SendCmd(Motor[0], 1, TMCL_MVP, MVP_ABS, 0, pos);
+		GetResult(Motor[0], &Address, &Status, &Value);
+		sleep(4);
+	}
+
+	if (xy=="y" || xy =="Y")
+	{
+		SendCmd(Motor[1], 1, TMCL_SAP, 4, 0, speed);			
+		SendCmd(Motor[1], 1, TMCL_MVP, MVP_ABS, 0, pos);
+		GetResult(Motor[1], &Address, &Status, &Value);
+		sleep(4);
+	}
+
+	if(xy != "y" && xy != "Y" && xy != "x" && xy != "X"){
+		cout << "Wrong parameter for xy used" << endl;	
+	} 
 }
 
+int MotorControl::CalcStepsX(double pos){ // returns number of steps for a given distance in mm for the Motor on the x axis
+	// For x axis: 12800 steps = 140mm -> 91,4285714steps = 1mm
+	// round down to int -> +0.5
+	
+	return (int)(pos * 91.4285714 + 0.5); 
+}
 
+int MotorControl::CalcStepsY(double pos){ // returns number of steps for a given distance in mm for the Motor on the y axis
+	// For y axis: 12800 steps = 85mm -> 150,588235 = 1mm
+	// round down to int -> +0.5
+
+	return (int)(pos * 150.588235 + 0.5);
+}
 
 
 

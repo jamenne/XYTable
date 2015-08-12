@@ -10,7 +10,7 @@
 
 
 #include "MotorControl.h"
-#include "Spectrometer.h"
+#include "/home/laborlinux/src/SpectrometerClass/Spectrometer.h"
 #include <iostream>
 #include <unistd.h>
 
@@ -42,20 +42,22 @@ int main(int argc, char* argv[])
 		}	
 
 
+	
 	// Connect motors, motors are saved in an array	
 	MotorControl::ConnectMotor(verbosity, Motor);
 
+	
 	cout << "Do you want to do a reference run? [y/n]" << endl;
 	cin >> input;
 
-	if(input=='y' | input=='Y'){
+	if((input=='y') | (input=='Y')){
 
 		cout << "Starting reference run on x axis!" << endl;
 		sleep(2);
-		MotorControl::ReferenceRunX(Motor[0], Address, Status, Value);
+		MotorControl::ReferenceRunX(Motor, Address, Status, Value);
 		cout << "Starting reference run on y axis!" << endl;
 		sleep(2);
-		MotorControl::ReferenceRunY(Motor[1], Address, Status, Value);
+		MotorControl::ReferenceRunY(Motor, Address, Status, Value);
 
 		cout << "Finished reference run!" << endl;
 
@@ -71,20 +73,25 @@ int main(int argc, char* argv[])
 	int x_Step = 0;
 	int x_NumbOfSteps = 0;
 
-	cout << "What is the start position on the x axis?" << endl;
-	cin >> x_StartPosition;
 
-	cout << "What is the Distance between two measurements on the x axis?" << endl;
+	cout << "What is the start position (in mm) on the x axis?" << endl;
+	cin >> x_StartPosition;
+	x_StartPosition = MotorControl::CalcStepsX(x_StartPosition);
+
+	cout << "What is the distance (in mm) between two measurements on the x axis?" << endl;
 	cin >> x_Step;
+	x_Step = MotorControl::CalcStepsX(x_Step);
 
 	cout << "How many measurements you would like to take on the x axis?" << endl;
 	cin >> x_NumbOfSteps;
 
-	cout << "What is the start position on the y axis?" << endl;
+	cout << "What is the start position (in mm) on the y axis?" << endl;
 	cin >> y_StartPosition;
+	y_StartPosition = MotorControl::CalcStepsY(y_StartPosition);
 
-	cout << "What is the Distance between two measurements on the y axis?" << endl;
+	cout << "What is the distance (in mm) between two measurements on the y axis?" << endl;
 	cin >> y_Step;
+	y_Step = MotorControl::CalcStepsY(y_Step);
 
 	cout << "How many measurements you would like to take on the y axis?" << endl;
 	cin >> y_NumbOfSteps;
@@ -93,14 +100,16 @@ int main(int argc, char* argv[])
 	//Go to start position
 	cout << "Going to start position..." << endl;
 	// x axis
-	MotorControl::MoveAbsolute(Motor[0], x_StartPosition, Address, Status, Value);
+	MotorControl::MoveAbsolute(Motor, "x", x_StartPosition, Address, Status, Value);
 	//y axis
-	MotorControl::MoveAbsolute(Motor[1], y_StartPosition, Address, Status, Value);
+	MotorControl::MoveAbsolute(Motor, "y", y_StartPosition, Address, Status, Value);
 
 	cout << "Starting measurements..." << endl;
 
+	
 
 
+	
 	return 0;	
 }	
 
