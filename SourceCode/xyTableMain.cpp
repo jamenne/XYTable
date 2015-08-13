@@ -66,6 +66,39 @@ int main(int argc, char* argv[])
 
 	}
 
+	else if ((input == 'n') | (input == 'N'))
+	{
+		
+	}
+
+	else{
+		cout << "Wrong input. Use Y or N!" << endl;
+
+		cout << "Do you want to do a reference run? [y/n]" << endl;
+		cin >> input;
+
+		if((input=='y') | (input=='Y')){
+
+			cout << "Starting reference run on x axis!" << endl;
+			sleep(2);
+			MotorControl::ReferenceRunX(Motor, Address, Status, Value);
+			cout << "Starting reference run on y axis!" << endl;
+			sleep(2);
+			MotorControl::ReferenceRunY(Motor, Address, Status, Value);
+
+			cout << "Finished reference run!" << endl;
+
+		}
+
+		else{
+
+			cout << "You're to stupid to work with the xy table! Go away!" << endl;
+
+			return 1;
+
+		}
+	}
+
 	//Fix parameters
 	//y axis
 	int y_StartPosition = 0;
@@ -116,7 +149,7 @@ int main(int argc, char* argv[])
 	cout << "Which integration time would you like to use (10000-10000000µs)?" << endl;
 	cin >> IntTime;
 
-	cout << "How often would you like to average?" << endl;
+	cout << "At each position how many averages would you like to take?" << endl;
 	cin >> NumberOfAverages;
 	
 	// create your spectrometer
@@ -133,18 +166,18 @@ int main(int argc, char* argv[])
 	vector<vector<double> > Result;
 	stringstream path;
 
-	for (int i = 1; i < x_NumbOfSteps; i++)
+	for (int i = 1; i <= x_NumbOfSteps; i++)
 	{	
 		cout << "Current x position: " << posx << "mm" << endl;
-		Result = StartMeasurement(ham, 10000, 4);
+		Result = StartMeasurement(ham, 10000, NumberOfAverages);
 		path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
 		//cout << path.str() << endl;
 		SaveMeasurement(Result, path.str());
 		path.str("");
 
-		for (int j = 1; j < y_NumbOfSteps; j++)
+		for (int j = 1; j <= y_NumbOfSteps; j++)
 		{	
-			vector<vector<double> > Result = StartMeasurement(ham, 10000, 4);
+			vector<vector<double> > Result = StartMeasurement(ham, 10000, NumberOfAverages);
 			posy = j*y_Step;
 			cout << "Current y position: " << posy << "mm" << endl;		
 			MotorControl::MoveRelative(Motor, "y", MotorControl::CalcStepsY(y_Step), Address, Status, Value);
@@ -161,9 +194,6 @@ int main(int argc, char* argv[])
 	}
 
 
-
-
-	
 	return 0;	
 }	
 
