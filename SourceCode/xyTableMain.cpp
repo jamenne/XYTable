@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <limits>
 #include <ncurses.h>
+#include "/home/laborlinux/src/LED/LED.h"
 
 using namespace std;
 
@@ -144,16 +145,23 @@ int main(int argc, char* argv[])
 	// Initialize Spectrometer
 	int IntTime = 0;
 	int NumberOfAverages = 0;
-	string SerialNumber = "114CAA01";
+	//string SerialNumber = "114CAA01";
 
 	cout << "Which integration time would you like to use (10000-10000000µs)?" << endl;
 	cin >> IntTime;
 
 	cout << "At each position how many averages would you like to take?" << endl;
 	cin >> NumberOfAverages;
+
+	double current1, current2, current3;
+
+	cout << "Which currents you would like to use? (current1, current2, current3, in mA)" << endl;
+	cin >> current1;
+	cin >> current2;
+	cin >> current3;
 	
 	// create your spectrometer
-	Spectrometer* ham = new Spectrometer(SerialNumber);
+	Spectrometer* ham = new Spectrometer();
 
 	char temp;
 	cout << "Press any key to Start Measurement!" << endl;
@@ -164,32 +172,94 @@ int main(int argc, char* argv[])
 
 	double posx=0, posy=0;
 	vector<vector<double> > Result;
+	vector<vector<double> > Result1;
+	vector<vector<double> > Result2;
+	vector<vector<double> > Result3;
 	stringstream path;
+
+
+	cout << "Current x position: " << posx << "mm" << endl;
+	LEDoff();
+	cout << "Start dark measurement..." << endl;
+	Result = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+	sleep(5);
+
+	LEDon(current1);
+	cout << "Start light measurement with " << current1 << " mA..." << endl;
+	Result1 = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+	sleep(5);
+
+	LEDon(current2);
+	cout << "Start light measurement with " << current2 << " mA..." << endl;
+	Result2 = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+	sleep(5);
+
+	LEDon(current3);
+	cout << "Start light measurement with " << current3 << " mA..." << endl;
+	Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);
+	
+
+	sleep(5);
+	LEDoff();
+
+	path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
+	//cout << path.str() << endl;
+	SaveMeasurementDL(Result, Result1, Result2, Result3, path.str());
+	path.str("");
+
 
 	for (int i = 1; i <= x_NumbOfSteps; i++)
 	{	
+		MotorControl::MoveAbsolute(Motor, "y", y_StartPosition, Address, Status, Value);
+
+		posx=i*x_Step;
+		MotorControl::MoveRelative(Motor, "x", MotorControl::CalcStepsX(x_Step), Address, Status, Value);
+		sleep(2);
+
 		cout << "Current x position: " << posx << "mm" << endl;
-		Result = StartMeasurement(ham, 10000, NumberOfAverages);
+		LEDoff();
+		cout << "Start dark measurement..." << endl;
+		Result = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+		sleep(5);
+
+		LEDon(current1);
+		cout << "Start light measurement with " << current1 << " mA..." << endl;
+		Result1 = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+		sleep(5);
+
+		LEDon(current2);
+		cout << "Start light measurement with " << current2 << " mA..." << endl;
+		Result2 = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+		sleep(5);
+
+		LEDon(current3);
+		cout << "Start light measurement with " << current3 << " mA..." << endl;
+		Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);
+		
+
+		sleep(5);
+		LEDoff();
+
 		path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
 		//cout << path.str() << endl;
-		SaveMeasurement(Result, path.str());
+		SaveMeasurementDL(Result, Result1, Result2, Result3, path.str());
 		path.str("");
 
 		for (int j = 1; j <= y_NumbOfSteps; j++)
 		{	
-			vector<vector<double> > Result = StartMeasurement(ham, 10000, NumberOfAverages);
+			vector<vector<double> > Result = StartMeasurement(ham, IntTime, NumberOfAverages);
 			posy = j*y_Step;
 			cout << "Current y position: " << posy << "mm" << endl;		
 			MotorControl::MoveRelative(Motor, "y", MotorControl::CalcStepsY(y_Step), Address, Status, Value);
 			sleep(2);
 
 		}
-
-		MotorControl::MoveAbsolute(Motor, "y", y_StartPosition, Address, Status, Value);
-
-		posx=i*x_Step;
-		MotorControl::MoveRelative(Motor, "x", MotorControl::CalcStepsX(x_Step), Address, Status, Value);
-		sleep(2);
 
 	}
 

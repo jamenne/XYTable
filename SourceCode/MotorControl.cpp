@@ -1,7 +1,7 @@
-#include "RS232communication.hpp"
+#include "RS232communication.h"
 #include "MotorControl.h"
 #include <fstream>
-#include <string>
+#include <string.h>
 #include <iostream>
 #include <cstdlib>
 #include <unistd.h>
@@ -40,7 +40,7 @@ void MotorControl::ConnectMotor(bool verbosity, vector<int> &Motor){
 		//cout << a << Motor_handle[a] << endl;
 		if (Motor_handle[a] >= 0){
 			bool connected = true;
-			SendCmd(Motor_handle[a], 1, TMCL_MVP, 0, 0, 0);
+			SendCmd(Motor_handle[a], 1, TMCL_GAP, 0, 0, 0); // just try to speak with motor, used GAP to not change the position
 			sleep(1);
 			Address = 0; Status = 0; Value = 0;
 
@@ -222,5 +222,65 @@ int MotorControl::CalcStepsY(double pos){ // returns number of steps for a given
 	return (int)(pos * 150.588235 + 0.5);
 }
 
+//Send a binary TMCL command
+//e.g.  SendCmd(ComHandle, 1, TMCL_MVP, MVP_ABS, 1, 50000);   will be MVP ABS, 1, 50000 for a module with address 1
+//Parameters: Handle: Handle of the serial port (returned by OpenRS232).
+//            Address: address of the module (factory default is 1).
+//            Command: the TMCL command (see the constants at the begiining of this file)
+//            Type:    the "Type" parameter of the TMCL command (set to 0 if unused)
+//            Motor:   the motor number (set to 0 if unused)
+//            Value:   the "Value" parameter (depending on the command, set to 0 if unused)
+void SendCmd(int Handle, unsigned char Address, unsigned char Command, unsigned char Type, unsigned char Motor, int Value)
+{
+	unsigned char TxBuffer[9];
+	int i;
 
+	TxBuffer[0]=Address;
+	TxBuffer[1]=Command;
+	TxBuffer[2]=Type;
+	TxBuffer[3]=Motor;
+	TxBuffer[4]=Value >> 24;
+	TxBuffer[5]=Value >> 16;
+	TxBuffer[6]=Value >> 8;
+	TxBuffer[7]=Value & 0xff;
+	TxBuffer[8]=0;
+	for(i=0; i<8; i++)
+		TxBuffer[8]+=TxBuffer[i];
+
+	//Send the datagram
+	write(Handle, TxBuffer, 9);
+}
+
+//Read the result that is returned by the module
+//Parameters: Handle: handle of the serial port, as returned by OpenRS232
+//            Address: pointer to variable to hold the reply address returned by the module
+//            Status: pointer to variable to hold the status returned by the module (100 means okay)
+//            Value: pointer to variable to hold the value returned by the module
+//Return value: TMCL_RESULT_OK: result has been read without errors
+//              TMCL_RESULT_NOT_READY: not enough bytes read so far (try again)
+//              TMCL_RESULT_CHECKSUM_ERROR: checksum of reply packet wrong
+unsigned char GetResult(int Handle, unsigned char *Address, unsigned char *Status, int *Value)
+{
+	unsigned char RxBuffer[9], Checksum;
+	int i,byte=1,nbytes=0,nerror=0;
+
+	while(nbytes < 9){
+		byte = read(Handle, &RxBuffer[nbytes], 1);
+		if (byte > 0) nbytes++;
+		else nerror++;
+		if(nerror > 9) break;
+	}
+//	cout << "read() loop returned " << nbytes << endl;
+	Checksum=0;
+	for(i=0; i<8; i++)
+		Checksum+=RxBuffer[i];
+
+	if(Checksum!=RxBuffer[8]) return -1;
+
+	*Address=RxBuffer[0];
+	*Status=RxBuffer[2];
+	*Value=(RxBuffer[4] << 24) | (RxBuffer[5] << 16) | (RxBuffer[6] << 8) | RxBuffer[7];
+
+	return nbytes;
+}
 

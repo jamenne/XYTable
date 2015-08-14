@@ -135,6 +135,54 @@ MotorControl.cpp.s:
 	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/MotorControl.cpp.s
 .PHONY : MotorControl.cpp.s
 
+RS232communication.o: RS232communication.cpp.o
+.PHONY : RS232communication.o
+
+# target to build an object file
+RS232communication.cpp.o:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/RS232communication.cpp.o
+.PHONY : RS232communication.cpp.o
+
+RS232communication.i: RS232communication.cpp.i
+.PHONY : RS232communication.i
+
+# target to preprocess a source file
+RS232communication.cpp.i:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/RS232communication.cpp.i
+.PHONY : RS232communication.cpp.i
+
+RS232communication.s: RS232communication.cpp.s
+.PHONY : RS232communication.s
+
+# target to generate assembly for a file
+RS232communication.cpp.s:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/RS232communication.cpp.s
+.PHONY : RS232communication.cpp.s
+
+home/laborlinux/src/LED/LED.o: home/laborlinux/src/LED/LED.cpp.o
+.PHONY : home/laborlinux/src/LED/LED.o
+
+# target to build an object file
+home/laborlinux/src/LED/LED.cpp.o:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/LED/LED.cpp.o
+.PHONY : home/laborlinux/src/LED/LED.cpp.o
+
+home/laborlinux/src/LED/LED.i: home/laborlinux/src/LED/LED.cpp.i
+.PHONY : home/laborlinux/src/LED/LED.i
+
+# target to preprocess a source file
+home/laborlinux/src/LED/LED.cpp.i:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/LED/LED.cpp.i
+.PHONY : home/laborlinux/src/LED/LED.cpp.i
+
+home/laborlinux/src/LED/LED.s: home/laborlinux/src/LED/LED.cpp.s
+.PHONY : home/laborlinux/src/LED/LED.s
+
+# target to generate assembly for a file
+home/laborlinux/src/LED/LED.cpp.s:
+	$(MAKE) -f CMakeFiles/xyTableMain.dir/build.make CMakeFiles/xyTableMain.dir/home/laborlinux/src/LED/LED.cpp.s
+.PHONY : home/laborlinux/src/LED/LED.cpp.s
+
 home/laborlinux/src/SpectrometerClass/SpecMeasurement.o: home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp.o
 .PHONY : home/laborlinux/src/SpectrometerClass/SpecMeasurement.o
 
@@ -219,6 +267,12 @@ help:
 	@echo "... MotorControl.o"
 	@echo "... MotorControl.i"
 	@echo "... MotorControl.s"
+	@echo "... RS232communication.o"
+	@echo "... RS232communication.i"
+	@echo "... RS232communication.s"
+	@echo "... home/laborlinux/src/LED/LED.o"
+	@echo "... home/laborlinux/src/LED/LED.i"
+	@echo "... home/laborlinux/src/LED/LED.s"
 	@echo "... home/laborlinux/src/SpectrometerClass/SpecMeasurement.o"
 	@echo "... home/laborlinux/src/SpectrometerClass/SpecMeasurement.i"
 	@echo "... home/laborlinux/src/SpectrometerClass/SpecMeasurement.s"
