@@ -1,3 +1,7 @@
+//	Class to communicate with the motors
+//
+//	Created by Janine Müller on 30.07.2015
+
 #include "RS232communication.h"
 #include "MotorControl.h"
 #include <fstream>

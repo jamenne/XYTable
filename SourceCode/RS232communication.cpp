@@ -1,3 +1,7 @@
+//	Functions to read out RS232 connection
+//
+//	Created by Janine Müller on 30.07.2015
+
 #define INVALID_HANDLE_VALUE -1
 #define BAUDRATE B9600
 

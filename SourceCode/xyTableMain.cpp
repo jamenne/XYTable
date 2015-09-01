@@ -1,3 +1,6 @@
+//	Main to use the xyTable
+//
+//	Created by Janine Müller on 30.07.2015
 //
 //
 //
@@ -163,7 +166,7 @@ int main(int argc, char* argv[])
 	cout << "What is the distance (in mm) between two measurements on the y axis?" << endl;
 	cin >> y_Step;
 
-	cout << "How many measurements you would like to take on the y axis?" << endl;
+	cout << "How many steps you would like to take on the y axis?" << endl;
 	cin >> y_NumbOfSteps;
 
 
@@ -202,9 +205,9 @@ int main(int argc, char* argv[])
 	cout << "Press any key to Start Measurement!" << endl;
 	cin >> temp;
 	cout << "You now have 60 seconds to leave the room, or you're stuck here!" << endl;
-	sleep(50);
+	//sleep(50);
 	cout << "Ten seconds...." << endl;
-	sleep(10);
+	//sleep(10);
 
 	cout << "Starting measurements..." << endl;
 
@@ -216,81 +219,17 @@ int main(int argc, char* argv[])
 	stringstream path;
 
 
-	cout << "Current x position: " << posx << "mm" << endl;
-	LEDoff();
-	cout << "Start dark measurement..." << endl;
-	Result = StartMeasurement(ham, IntTime, NumberOfAverages);
-
-	sleep(5);
-
-	LEDon(current1);
-	cout << "Start light measurement with " << current1 << " mA..." << endl;
-	Result1 = StartMeasurement(ham, IntTime, NumberOfAverages);
-
-	/*sleep(5);
-
-	LEDon(current2);
-	cout << "Start light measurement with " << current2 << " mA..." << endl;
-	Result2 = StartMeasurement(ham, IntTime, NumberOfAverages);
-
-	sleep(5);
-
-	LEDon(current3);
-	cout << "Start light measurement with " << current3 << " mA..." << endl;
-	Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);*/
-	
-
-	sleep(5);
-	LEDoff();
-
-	path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
-	//cout << path.str() << endl;
-	SaveMeasurementD1L(Result, Result1, path.str());
-	path.str("");
-
-
 	for (int i = 1; i <= x_NumbOfSteps; i++)
 	{	
-		MotorControl::MoveAbsolute(Motor, "y", y_StartPosition, Address, Status, Value);
-
-		posx=i*x_Step;
-		MotorControl::MoveRelative(Motor, "x", MotorControl::CalcStepsX(x_Step), Address, Status, Value);
-		sleep(2);
 
 		cout << "Current x position: " << posx << "mm" << endl;
-/*		LEDoff();
-		cout << "Start dark measurement..." << endl;
-		Result = StartMeasurement(ham, IntTime, NumberOfAverages);
 
-		sleep(5);
-
-		LEDon(current1);
-		cout << "Start light measurement with " << current1 << " mA..." << endl;
-		Result1 = StartMeasurement(ham, IntTime, NumberOfAverages);
-
-		sleep(5);
-
-		LEDon(current2);
-		cout << "Start light measurement with " << current2 << " mA..." << endl;
-		Result2 = StartMeasurement(ham, IntTime, NumberOfAverages);
-
-		sleep(5);
-
-		LEDon(current3);
-		cout << "Start light measurement with " << current3 << " mA..." << endl;
-		Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);
-		
-
-		sleep(5);
-		LEDoff();
-
-		path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
-		//cout << path.str() << endl;
-		SaveMeasurementD1L(Result, Result1, path.str());
-		path.str("");
-*/
-		for (int j = 1; j <= y_NumbOfSteps; j++)
+		for (int j = 0; j <= y_NumbOfSteps; j++)
 		{	
+
+			posy = j*y_Step;
+			cout << "Current y position: " << posy << "mm" << endl;	
+
 			LEDoff();
 			cout << "Start dark measurement..." << endl;
 			Result = StartMeasurement(ham, IntTime, NumberOfAverages);
@@ -302,7 +241,7 @@ int main(int argc, char* argv[])
 			Result1 = StartMeasurement(ham, IntTime, NumberOfAverages);
 
 			sleep(5);
-
+/*
 			LEDon(current2);
 			cout << "Start light measurement with " << current2 << " mA..." << endl;
 			Result2 = StartMeasurement(ham, IntTime, NumberOfAverages);
@@ -314,20 +253,32 @@ int main(int argc, char* argv[])
 			Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);
 			
 
-			sleep(5);
+			sleep(5);*/
 			LEDoff();
 
-			path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
+			path << "/home/laborlinux/Data/Spectrometer/Spectrum_x=" << posx << "mm_y=" << posy <<"mm.txt";
 			//cout << path.str() << endl;
 			SaveMeasurementD1L(Result, Result1, path.str());
 			path.str("");
-		
-			posy = j*y_Step;
-			cout << "Current y position: " << posy << "mm" << endl;		
-			MotorControl::MoveRelative(Motor, "y", MotorControl::CalcStepsY(y_Step), Address, Status, Value);
-			sleep(2);
-
+			
+			if (j<y_NumbOfSteps)
+			{
+				MotorControl::MoveRelative(Motor, "y", MotorControl::CalcStepsY(y_Step), Address, Status, Value);
+				sleep(2);
+			}
+			
 		}
+
+		posx=i*x_Step;
+
+		if (i<x_NumbOfSteps)
+		{
+			MotorControl::MoveAbsolute(Motor, "y", y_StartPosition, Address, Status, Value);
+
+			MotorControl::MoveRelative(Motor, "x", MotorControl::CalcStepsX(x_Step), Address, Status, Value);
+			sleep(2);
+		}
+		
 
 	}
 
