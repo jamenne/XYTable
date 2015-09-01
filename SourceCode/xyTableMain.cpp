@@ -18,6 +18,7 @@
 #include <ncurses.h>
 #include "/home/laborlinux/src/LED/LED.h"
 
+
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -56,14 +57,48 @@ int main(int argc, char* argv[])
 
 	if((input=='y') | (input=='Y')){
 
-		cout << "Starting reference run on x axis!" << endl;
-		sleep(2);
-		MotorControl::ReferenceRunX(Motor, Address, Status, Value);
-		cout << "Starting reference run on y axis!" << endl;
-		sleep(2);
-		MotorControl::ReferenceRunY(Motor, Address, Status, Value);
+		cout << "On both axis? [y/n]" << endl;
+		cin >> input;
 
-		cout << "Finished reference run!" << endl;
+		if((input=='y') | (input=='Y')){
+
+			cout << "Starting reference run on x axis!" << endl;
+			sleep(2);
+			MotorControl::ReferenceRunX(Motor, Address, Status, Value);
+
+			cout << "Starting reference run on y axis!" << endl;
+			sleep(2);
+			MotorControl::ReferenceRunY(Motor, Address, Status, Value);
+
+			cout << "Finished reference run!" << endl;
+		}
+
+		if((input=='n') | (input=='N')){
+
+			cout << "Which axis? [x/y]" << endl;
+			cin >> input;
+
+			if((input=='x') | (input=='X')){
+
+				cout << "Starting reference run on x axis!" << endl;
+				sleep(2);
+				MotorControl::ReferenceRunX(Motor, Address, Status, Value);
+				cout << "Finished reference run!" << endl;
+
+
+			}
+
+			else if((input=='y') | (input=='Y')){
+
+				cout << "Starting reference run on y axis!" << endl;
+				sleep(2);
+				MotorControl::ReferenceRunY(Motor, Address, Status, Value);
+				cout << "Finished reference run!" << endl;
+
+			}
+
+			else cout << "You're to stupid to work with the xy table! Go away!" << endl;
+		}
 
 	}
 
@@ -134,6 +169,7 @@ int main(int argc, char* argv[])
 
 	//Go to start position
 	cout << "Going to start position..." << endl;
+
 	// x axis
 	MotorControl::MoveAbsolute(Motor, "x", x_StartPosition, Address, Status, Value);
 	//y axis
@@ -157,16 +193,18 @@ int main(int argc, char* argv[])
 
 	cout << "Which currents you would like to use? (current1, current2, current3, in mA)" << endl;
 	cin >> current1;
-	cin >> current2;
-	cin >> current3;
+	//cin >> current2;
+	//cin >> current3;
 	
 	// create your spectrometer
 	Spectrometer* ham = new Spectrometer();
-
 	char temp;
 	cout << "Press any key to Start Measurement!" << endl;
 	cin >> temp;
-
+	cout << "You now have 60 seconds to leave the room, or you're stuck here!" << endl;
+	sleep(50);
+	cout << "Ten seconds...." << endl;
+	sleep(10);
 
 	cout << "Starting measurements..." << endl;
 
@@ -189,7 +227,7 @@ int main(int argc, char* argv[])
 	cout << "Start light measurement with " << current1 << " mA..." << endl;
 	Result1 = StartMeasurement(ham, IntTime, NumberOfAverages);
 
-	sleep(5);
+	/*sleep(5);
 
 	LEDon(current2);
 	cout << "Start light measurement with " << current2 << " mA..." << endl;
@@ -199,7 +237,7 @@ int main(int argc, char* argv[])
 
 	LEDon(current3);
 	cout << "Start light measurement with " << current3 << " mA..." << endl;
-	Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);
+	Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);*/
 	
 
 	sleep(5);
@@ -207,7 +245,7 @@ int main(int argc, char* argv[])
 
 	path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
 	//cout << path.str() << endl;
-	SaveMeasurementDL(Result, Result1, Result2, Result3, path.str());
+	SaveMeasurementD1L(Result, Result1, path.str());
 	path.str("");
 
 
@@ -220,7 +258,7 @@ int main(int argc, char* argv[])
 		sleep(2);
 
 		cout << "Current x position: " << posx << "mm" << endl;
-		LEDoff();
+/*		LEDoff();
 		cout << "Start dark measurement..." << endl;
 		Result = StartMeasurement(ham, IntTime, NumberOfAverages);
 
@@ -248,12 +286,42 @@ int main(int argc, char* argv[])
 
 		path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
 		//cout << path.str() << endl;
-		SaveMeasurementDL(Result, Result1, Result2, Result3, path.str());
+		SaveMeasurementD1L(Result, Result1, path.str());
 		path.str("");
-
+*/
 		for (int j = 1; j <= y_NumbOfSteps; j++)
 		{	
-			vector<vector<double> > Result = StartMeasurement(ham, IntTime, NumberOfAverages);
+			LEDoff();
+			cout << "Start dark measurement..." << endl;
+			Result = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+			sleep(5);
+
+			LEDon(current1);
+			cout << "Start light measurement with " << current1 << " mA..." << endl;
+			Result1 = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+			sleep(5);
+
+			LEDon(current2);
+			cout << "Start light measurement with " << current2 << " mA..." << endl;
+			Result2 = StartMeasurement(ham, IntTime, NumberOfAverages);
+
+			sleep(5);
+
+			LEDon(current3);
+			cout << "Start light measurement with " << current3 << " mA..." << endl;
+			Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);
+			
+
+			sleep(5);
+			LEDoff();
+
+			path << "/home/laborlinux/Data/Spectrometer/Spectrum_" << posx << "mm.txt";
+			//cout << path.str() << endl;
+			SaveMeasurementD1L(Result, Result1, path.str());
+			path.str("");
+		
 			posy = j*y_Step;
 			cout << "Current y position: " << posy << "mm" << endl;		
 			MotorControl::MoveRelative(Motor, "y", MotorControl::CalcStepsY(y_Step), Address, Status, Value);
@@ -262,7 +330,6 @@ int main(int argc, char* argv[])
 		}
 
 	}
-
 
 	return 0;	
 }	

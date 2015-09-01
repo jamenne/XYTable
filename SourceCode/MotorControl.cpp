@@ -66,10 +66,19 @@ void MotorControl::ConnectMotor(bool verbosity, vector<int> &Motor){
 		default: cout << Motor.size() << " Motors detected." << endl; break;
 	}
 
+	//Enable end switches 
+	SendCmd(Motor[1], 1, TMCL_SAP, 12, 0, 0);
+	GetResult(Motor[1], &Address, &Status, &Value);
+	SendCmd(Motor[1], 1, TMCL_SAP, 13, 0, 0);
+	GetResult(Motor[1], &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 12, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 13, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
+
 }
 
 void MotorControl::ReferenceRunX(vector<int> &Motor, unsigned char Address, unsigned char Status, int Value){
-
 	//Parameters maybe have to be adjusted
 
 	//Settings for the x-axis
@@ -82,8 +91,8 @@ void MotorControl::ReferenceRunX(vector<int> &Motor, unsigned char Address, unsi
 	//1 – Only the left reference switch is searched.
 	//2 – The right switch is searched, then the left switch is searched.
 	//3 – Three-switch-mode: the right switch is searched first, then the reference switch will be searched.
-	SendCmd(Motor[0], 1, TMCL_SAP, 193, 0, 2);
-	GetResult(Motor[0], &Address, &Status, &Value);
+	//SendCmd(Motor[0], 1, TMCL_SAP, 193, 0, 1);
+	//GetResult(Motor[0], &Address, &Status, &Value);
 	//Max. current; TMC109 max. 255 
 	SendCmd(Motor[0], 1, TMCL_SAP, 6, 0, 200);
 	GetResult(Motor[0], &Address, &Status, &Value);
@@ -91,11 +100,11 @@ void MotorControl::ReferenceRunX(vector<int> &Motor, unsigned char Address, unsi
 	SendCmd(Motor[0], 1, TMCL_SAP, 5, 0, 5);
 	GetResult(Motor[0], &Address, &Status, &Value);
 	//Max. speed
-	SendCmd(Motor[0], 1, TMCL_SAP, 4, 0, 200);
+	SendCmd(Motor[0], 1, TMCL_SAP, 4, 0, 300);
 	GetResult(Motor[0], &Address, &Status, &Value);
 	//Min. speed
-	SendCmd(Motor[0], 1, TMCL_SAP, 130, 0, 1);
-	GetResult(Motor[0], &Address, &Status, &Value);
+	//SendCmd(Motor[0], 1, TMCL_SAP, 130, 0, 1);
+	//GetResult(Motor[0], &Address, &Status, &Value);
 	//Disable soft stop, the motor will stop immediately (disregarding motor limits), when the reference or limit switch is hit.
 	SendCmd(Motor[0], 1, TMCL_SAP, 149, 0, 0);
 	GetResult(Motor[0], &Address, &Status, &Value);
@@ -103,13 +112,33 @@ void MotorControl::ReferenceRunX(vector<int> &Motor, unsigned char Address, unsi
 	SendCmd(Motor[0], 1, TMCL_SAP, 194, 0, 0);
 	GetResult(Motor[0], &Address, &Status, &Value);
 	//Reference switch speed (0-8), the speed for the switching point calibration can be selected
-	SendCmd(Motor[0], 1, TMCL_SAP, 195, 0, 8);
-	GetResult(Motor[0], &Address, &Status, &Value);
+	//SendCmd(Motor[0], 1, TMCL_SAP, 195, 0, 8);
+	//GetResult(Motor[0], &Address, &Status, &Value);
 	sleep(1);
-
+	
 
 	//Reference Run
 	SendCmd(Motor[0], 1, TMCL_RFS, RFS_START, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
+
+	sleep(90);
+
+	//Value = 6; // should not be zero
+
+	/*while(Value != 0){
+
+		SendCmd(Motor[1], 1, TMCL_RFS, RFS_STATUS, 0, 0);
+		GetResult(Motor[1], &Address, &Status, &Value);
+		cout << "Value: " << Value  << endl;
+	}*/
+	
+
+	//Set zero position
+	SendCmd(Motor[0], 1, TMCL_MST, 0, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 0, 0, 0);
+	GetResult(Motor[0], &Address, &Status, &Value);
+	SendCmd(Motor[0], 1, TMCL_SAP, 1, 0, 0);
 	GetResult(Motor[0], &Address, &Status, &Value);
 
 
@@ -129,8 +158,8 @@ void MotorControl::ReferenceRunY(vector<int> &Motor, unsigned char Address, unsi
 	//1 – Only the left reference switch is searched.
 	//2 – The right switch is searched, then the left switch is searched.
 	//3 – Three-switch-mode: the right switch is searched first, then the reference switch will be searched.
-	SendCmd(Motor[1], 1, TMCL_SAP, 193, 0, 2);
-	GetResult(Motor[1], &Address, &Status, &Value);
+	//SendCmd(Motor[1], 1, TMCL_SAP, 193, 0, 1);
+	//GetResult(Motor[1], &Address, &Status, &Value);
 	//Max. current; Max. 1500
 	SendCmd(Motor[1], 1, TMCL_SAP, 6, 0, 900);
 	GetResult(Motor[1], &Address, &Status, &Value);
@@ -138,11 +167,11 @@ void MotorControl::ReferenceRunY(vector<int> &Motor, unsigned char Address, unsi
 	SendCmd(Motor[1], 1, TMCL_SAP, 5, 0, 3);
 	GetResult(Motor[1], &Address, &Status, &Value);
 	//Max. speed
-	SendCmd(Motor[1], 1, TMCL_SAP, 4, 0, 100);
+	SendCmd(Motor[1], 1, TMCL_SAP, 4, 0, 200);
 	GetResult(Motor[1], &Address, &Status, &Value);
 	//Min. speed
-	SendCmd(Motor[1], 1, TMCL_SAP, 130, 0, 1);
-	GetResult(Motor[1], &Address, &Status, &Value);
+	//SendCmd(Motor[1], 1, TMCL_SAP, 130, 0, 1);
+	//GetResult(Motor[1], &Address, &Status, &Value);
 	//Referencing search speed (0-full speed, 1-half of max.,...)
 	SendCmd(Motor[1], 1, TMCL_SAP, 194, 0, 0);
 	GetResult(Motor[1], &Address, &Status, &Value);
@@ -150,13 +179,31 @@ void MotorControl::ReferenceRunY(vector<int> &Motor, unsigned char Address, unsi
 	SendCmd(Motor[1], 1, TMCL_SAP, 149, 0, 0);
 	GetResult(Motor[1], &Address, &Status, &Value);
 	//Reference switch speed (0-8), the speed for the switching point calibration can be selected
-	SendCmd(Motor[1], 1, TMCL_SAP, 195, 0, 8);
-	GetResult(Motor[1], &Address, &Status, &Value);
+	//SendCmd(Motor[1], 1, TMCL_SAP, 195, 0, 8);
+	//GetResult(Motor[1], &Address, &Status, &Value);
 	sleep(1);
 
 
 	//Reference Run
 	SendCmd(Motor[1], 1, TMCL_RFS, RFS_START, 0, 0);
+	GetResult(Motor[1], &Address, &Status, &Value);
+
+	sleep(20);
+	/*Value = 6; // should not be zero
+
+	while(Value != 0){
+
+		SendCmd(Motor[1], 1, TMCL_RFS, RFS_STATUS, 0, 0);
+		GetResult(Motor[1], &Address, &Status, &Value);
+		cout << "Value: " << Value  << endl;
+	}*/
+	
+	//Set zero position
+	SendCmd(Motor[1], 1, TMCL_MST, 0, 0, 0);
+	GetResult(Motor[1], &Address, &Status, &Value);
+	SendCmd(Motor[1], 1, TMCL_SAP, 0, 0, 0);
+	GetResult(Motor[1], &Address, &Status, &Value);
+	SendCmd(Motor[1], 1, TMCL_SAP, 1, 0, 0);
 	GetResult(Motor[1], &Address, &Status, &Value);
 
 }
@@ -212,7 +259,7 @@ int MotorControl::CalcStepsX(double pos){ // returns number of steps for a given
 	// For x axis: 12800 steps = 140mm -> 91,4285714steps = 1mm
 	// round down to int -> +0.5
 	
-	return (int)(pos * 91.4285714 + 0.5); 
+	return (int)(pos * 91.4285714 + 0.5);
 }
 
 int MotorControl::CalcStepsY(double pos){ // returns number of steps for a given distance in mm for the Motor on the y axis
