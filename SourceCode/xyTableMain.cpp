@@ -141,11 +141,11 @@ int main(int argc, char* argv[])
 	//Fix parameters
 	//y axis
 	int y_StartPosition = 0;
-	int y_Step = 0;
+	double y_Step = 0;
 	int y_NumbOfSteps = 0;
 	//x axis
 	int x_StartPosition = 0;
-	int x_Step = 0;
+	double x_Step = 0;
 	int x_NumbOfSteps = 0;
 
 
@@ -207,7 +207,7 @@ int main(int argc, char* argv[])
 	cout << "You now have 60 seconds to leave the room, or you're stuck here!" << endl;
 	//sleep(50);
 	cout << "Ten seconds...." << endl;
-	//sleep(10);
+	sleep(10);
 
 	cout << "Starting measurements..." << endl;
 
