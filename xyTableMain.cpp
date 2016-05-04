@@ -13,13 +13,13 @@
 
 
 #include "MotorControl.h"
-#include "/home/laborlinux/src/SpectrometerClass/Spectrometer.h"
-#include "/home/laborlinux/src/SpectrometerClass/SpecMeasurement.h"
+#include "/home/xytable/src/SpectrometerClass/Spectrometer.h"
+#include "/home/xytable/src/SpectrometerClass/SpecMeasurement.h"
 #include <iostream>
 #include <unistd.h>
 #include <limits>
 #include <ncurses.h>
-#include "/home/laborlinux/src/LED/LED.h"
+#include "/home/xytable/src/LEDClass/LED.h"
 
 
 using namespace std;

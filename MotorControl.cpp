@@ -2,7 +2,7 @@
 //
 //	Created by Janine Müller on 30.07.2015
 
-#include "RS232communication.h"
+#include "/home/xytable/src/RS232com/RS232communication.h"
 #include "MotorControl.h"
 #include <fstream>
 #include <string.h>

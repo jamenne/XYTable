@@ -9,10 +9,10 @@ set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 
 # ROOT, a library for HEP data analysis (contains RooFit)
-find_package(ROOT REQUIRED)
-include_directories(${ROOT_INCLUDE_DIR})
-set(LIBRARIES ${LIBRARIES} ${ROOT_LIBRARIES})
-set(LIBRARIES ${LIBRARIES} ${ROOFIT_LIBRARIES})
+#find_package(ROOT REQUIRED)
+#include_directories(${ROOT_INCLUDE_DIR})
+#set(LIBRARIES ${LIBRARIES} ${ROOT_LIBRARIES})
+#set(LIBRARIES ${LIBRARIES} ${ROOFIT_LIBRARIES})
 
 # BOOST
 set(Boost_USE_STATIC_LIBS OFF) 
@@ -40,7 +40,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-add_executable( xyTableMain xyTableMain.cpp MotorControl.cpp RS232communication.cpp /home/laborlinux/src/SpectrometerClass/Spectrometer.cpp /home/laborlinux/src/SpectrometerClass/SpecMeasurement.cpp /home/laborlinux/src/LED/LED.cpp)
+add_executable( xyTableMain xyTableMain.cpp MotorControl.cpp /home/xytable/src/RS232com/RS232communication.cpp /home/xytable/src/SpectrometerClass/Spectrometer.cpp /home/xytable/src/SpectrometerClass/SpecMeasurement.cpp /home/xytable/src/LEDClass/LED.cpp)
 target_link_libraries( xyTableMain ${Boost_LIBRARIES})
 #target_link_libraries( xyTableMain ${LIBRARIES})
 
