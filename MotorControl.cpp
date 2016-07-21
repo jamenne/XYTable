@@ -40,6 +40,11 @@ void MotorControl::ConnectMotor(bool verbosity, vector<int> &Motor){
 
 	vector<int> Motor_handle(n);
 	for (int a=0;a<n;a++){
+		//cout << "errno " << errno << endl;
+		// ???????
+		errno = 0;
+		// ???????
+
 		Motor_handle[a] = OpenRS232(a+1, 9600); // Baudrate=9600 is defined in RS232communication.hpp, this parameter has no effect
 		//cout << a << Motor_handle[a] << endl;
 		if (Motor_handle[a] >= 0){
@@ -285,6 +290,7 @@ void SendCmd(int Handle, unsigned char Address, unsigned char Command, unsigned 
 {
 	unsigned char TxBuffer[9];
 	int i;
+	int written;
 
 	TxBuffer[0]=Address;
 	TxBuffer[1]=Command;
@@ -299,7 +305,9 @@ void SendCmd(int Handle, unsigned char Address, unsigned char Command, unsigned 
 		TxBuffer[8]+=TxBuffer[i];
 
 	//Send the datagram
-	write(Handle, TxBuffer, 9);
+	written = write(Handle, TxBuffer, 9);
+
+	//cout << "Written: " << written << endl;
 }
 
 //Read the result that is returned by the module
@@ -321,7 +329,7 @@ unsigned char GetResult(int Handle, unsigned char *Address, unsigned char *Statu
 		else nerror++;
 		if(nerror > 9) break;
 	}
-//	cout << "read() loop returned " << nbytes << endl;
+	//cout << "read() loop returned " << nbytes << endl;
 	Checksum=0;
 	for(i=0; i<8; i++)
 		Checksum+=RxBuffer[i];

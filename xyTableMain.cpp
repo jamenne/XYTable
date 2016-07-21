@@ -202,11 +202,14 @@ int main(int argc, char* argv[])
 	// create your spectrometer
 	Spectrometer* ham = new Spectrometer();
 	char temp;
+
+
 	cout << "Press any key to Start Measurement!" << endl;
 	cin >> temp;
-	cout << "You now have 60 seconds to leave the room, or you're stuck here!" << endl;
-	//sleep(50);
-	cout << "Ten seconds...." << endl;
+
+	cout << "Now you have 40 seconds to leave the room!" << endl;
+	sleep(30);
+	cout << "Ten secounds..." << endl;
 	sleep(10);
 
 	cout << "Starting measurements..." << endl;
@@ -256,7 +259,7 @@ int main(int argc, char* argv[])
 			sleep(5);*/
 			LEDoff();
 
-			path << "/home/laborlinux/Data/Spectrometer/Spectrum_x=" << posx << "mm_y=" << posy <<"mm.txt";
+			path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm_y=" << posy <<"mm.txt";
 			//cout << path.str() << endl;
 			SaveMeasurementD1L(Result, Result1, path.str());
 			path.str("");
