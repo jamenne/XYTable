@@ -11,49 +11,75 @@
 //SendCmd(Motor_handle[0], 1, 137, 0, 0, 1234); 	
 //SendCmd(Motor_handle[1], 1, 137, 0, 0, 1234);
 
+// Motor Control
+#include "../MotorControl/Motor.h"
+// Spectrometer
+#include "../SpectrometerClass/Spectrometer.h"
+// Spectrometer Measurements
+#include "../SpectrometerClass/SpecMeasurement/SpecMeasurement.h"
+// LED
+#include "../LEDClass/LED.h"
+// xyTable
+#include "xyTable.h"
 
-#include "MotorControl.h"
-#include "/home/xytable/src/SpectrometerClass/Spectrometer.h"
-#include "/home/xytable/src/SpectrometerClass/SpecMeasurement.h"
+
 #include <iostream>
 #include <unistd.h>
 #include <limits>
-#include <ncurses.h>
-#include "/home/xytable/src/LEDClass/LED.h"
+#include <errno.h>
+#include <signal.h>
 
 
 using namespace std;
 
+// To do an action when somebody press Ctrl+C or if there is an error than interrupt the running of the code
+void Error_handler(int sig) 
+{
+	cout << "" << endl;
+	cout << "" << endl;
+	cout << "It was terminated by a signal" << endl;
+
+    // To print why it was terminated
+    switch(sig) {
+    	case SIGINT:
+    		printf("Interrupt from keyboard; interactive attention signal.");
+    		break;
+    	case SIGTERM:
+    		printf("Termination request.");
+    		break;
+    	case SIGABRT:
+    		printf("Abnormal termination; abort signal from abort(3).");
+    		break;
+    	case SIGSEGV:
+    		printf("„Segmentation violation“: invalid memory reference.");
+    		break; 
+    	default:
+    		printf("Signal unknown"); 
+    		break; 		
+    }
+    cout << "" << endl;
+    cout << "" << endl;
+
+    exit(1); // To shut down the program
+}
+
+
 int main(int argc, char* argv[])
 {
-	bool verbosity=false;
-	int arg=1;
-	vector<int> Motor(0);
+	signal (SIGINT, Error_handler); 	// If the program is shut down using CTRL+C
+	signal (SIGTERM, Error_handler); 	// If the program is shut down because of thermination request (kill)
+	signal (SIGABRT, Error_handler); 	// If the program is shut down because of abnormal termination (?)
+	signal (SIGSEGV, Error_handler); 	// If the program is shut down because of segmentation violation (the usual reason)
+
+	unsigned char Address = 0;
+	unsigned char Status = 0;
+	int Value = 0;
+
+	Motor *Mot = new Motor(Address,Status,Value);
+
+	xyTable *Table = new xyTable();
 
 	char input;
-
-	unsigned char Address, Status;
-	int Value;
-
-	// Excution with -v, function checks how many comports are available
-	for (arg=1;arg<argc;arg++){
-		//cout << arg << " of " << argc << " parameters parsed. argv= " << argv[arg] << endl;
-		//if (arg + 1 != argc) cout << "last parameter reached"<< endl;
-		if (string(argv[arg]) == "-v"){
-			verbosity = true;
-		}
-	}
-
-	if (verbosity)
-		{
-			MotorControl::CheckComports();
-		}	
-
-
-	
-	// Connect motors, motors are saved in an array	
-	MotorControl::ConnectMotor(verbosity, Motor);
-
 	
 	cout << "Do you want to do a reference run? [y/n]" << endl;
 	cin >> input;
@@ -67,11 +93,11 @@ int main(int argc, char* argv[])
 
 			cout << "Starting reference run on x axis!" << endl;
 			sleep(2);
-			MotorControl::ReferenceRunX(Motor, Address, Status, Value);
+			Mot->ReferenceRunX();
 
 			cout << "Starting reference run on y axis!" << endl;
 			sleep(2);
-			MotorControl::ReferenceRunY(Motor, Address, Status, Value);
+			Mot->ReferenceRunY();
 
 			cout << "Finished reference run!" << endl;
 		}
@@ -85,7 +111,7 @@ int main(int argc, char* argv[])
 
 				cout << "Starting reference run on x axis!" << endl;
 				sleep(2);
-				MotorControl::ReferenceRunX(Motor, Address, Status, Value);
+				Mot->ReferenceRunX();
 				cout << "Finished reference run!" << endl;
 
 
@@ -95,203 +121,114 @@ int main(int argc, char* argv[])
 
 				cout << "Starting reference run on y axis!" << endl;
 				sleep(2);
-				MotorControl::ReferenceRunY(Motor, Address, Status, Value);
+				Mot->ReferenceRunY();
 				cout << "Finished reference run!" << endl;
 
 			}
 
-			else cout << "You're to stupid to work with the xy table! Go away!" << endl;
+			else{
+				cout << "You're too stupid to work with the xy table! Go away!" << endl;
+				exit(EXIT_FAILURE);
+			}
 		}
 
 	}
 
 	else if ((input == 'n') | (input == 'N'))
 	{
-		
+		cout << "Skipping Reference Run" << endl;
 	}
 
 	else{
-		cout << "Wrong input. Use Y or N!" << endl;
-
-		cout << "Do you want to do a reference run? [y/n]" << endl;
-		cin >> input;
-
-		if((input=='y') | (input=='Y')){
-
-			cout << "Starting reference run on x axis!" << endl;
-			sleep(2);
-			MotorControl::ReferenceRunX(Motor, Address, Status, Value);
-			cout << "Starting reference run on y axis!" << endl;
-			sleep(2);
-			MotorControl::ReferenceRunY(Motor, Address, Status, Value);
-
-			cout << "Finished reference run!" << endl;
-
-		}
-
-		else{
-
-			cout << "You're to stupid to work with the xy table! Go away!" << endl;
-
-			return 1;
-
-		}
+		cout << "You're too stupid to work with the xy table! Go away!" << endl;
+		exit(EXIT_FAILURE);
 	}
 
 	//Fix parameters
 	//y axis
-	int y_StartPosition = 0;
-	double y_Step = 0;
-	int y_NumbOfSteps = 0;
+	double y_StartPosition = 0; // in mm, used to calculate no of steps for the motor
+	int y_MotorSteps = 0;
+	double y_Dis = 0; // distance between two measurements
+	int y_NumbOfMeas = 0;
 	//x axis
-	int x_StartPosition = 0;
-	double x_Step = 0;
-	int x_NumbOfSteps = 0;
+	double x_StartPosition = 0; // in mm, used to calculate no of steps for the motor
+	int x_MotorSteps = 0;
+	double x_Dis = 0; // distance between two measurements
+	int x_NumbOfMeas = 0;
 
+	bool yaxis = false;
 
-	cout << "What is the start position (in mm) on the x axis?" << endl;
-	cin >> x_StartPosition;
-	x_StartPosition = MotorControl::CalcStepsX(x_StartPosition);
+	cout << "Do you want to use the y axis?" << endl;
+	cin >> input;
 
-	cout << "What is the distance (in mm) between two measurements on the x axis?" << endl;
-	cin >> x_Step;
+	if((input=='y') | (input=='Y')){
 
-	cout << "How many measurements you would like to take on the x axis?" << endl;
-	cin >> x_NumbOfSteps;
+		yaxis = true;
 
-	cout << "What is the start position (in mm) on the y axis?" << endl;
-	cin >> y_StartPosition;
-	y_StartPosition = MotorControl::CalcStepsY(y_StartPosition);
+		cout << "What is the start position (in mm) on the x axis?" << endl;
+		cin >> x_StartPosition;
+		x_MotorSteps = Mot->CalcStepsX(x_StartPosition);
 
-	cout << "What is the distance (in mm) between two measurements on the y axis?" << endl;
-	cin >> y_Step;
+		cout << "What is the distance (in mm) between two measurements on the x axis?" << endl;
+		cin >> x_Dis;
 
-	cout << "How many steps you would like to take on the y axis?" << endl;
-	cin >> y_NumbOfSteps;
+		cout << "How many measurements you would like to take on the x axis?" << endl;
+		cin >> x_NumbOfMeas;
 
+		cout << "What is the start position (in mm) on the y axis?" << endl;
+		cin >> y_StartPosition;
+		y_MotorSteps = Mot->CalcStepsY(y_StartPosition);
 
-	//Go to start position
-	cout << "Going to start position..." << endl;
+		cout << "What is the distance (in mm) between two measurements on the y axis?" << endl;
+		cin >> y_Dis;
 
-	// x axis
-	MotorControl::MoveAbsolute(Motor, "x", x_StartPosition, Address, Status, Value);
-	//y axis
-	MotorControl::MoveAbsolute(Motor, "y", y_StartPosition, Address, Status, Value);
+		cout << "How many measurements you would like to take on the y axis?" << endl;
+		cin >> y_NumbOfMeas;
 
-	//Maybe need to be changed, if start position is far away
-	//sleep(5); // sleep in sec
+		//Go to start position
+		cout << "Going to start position..." << endl;
 
-	// Initialize Spectrometer
-	int IntTime = 0;
-	int NumberOfAverages = 0;
-	//string SerialNumber = "114CAA01";
+		// x axis
+		Mot->MoveAbsolute("x", x_MotorSteps);
+		//y axis
+		Mot->MoveAbsolute("y", y_MotorSteps);
+	}
 
-	cout << "Which integration time would you like to use (10000-10000000µs)?" << endl;
-	cin >> IntTime;
+	else if ((input == 'n') | (input == 'N')){
+		yaxis = false;
 
-	cout << "At each position how many averages would you like to take?" << endl;
-	cin >> NumberOfAverages;
+		cout << "Only using  X AXIS!" << endl;
 
-	double current1, current2, current3;
+		cout << "What is the start position (in mm) on the x axis?" << endl;
+		cin >> x_StartPosition;
+		x_MotorSteps = Mot->CalcStepsX(x_StartPosition);
 
-	cout << "Which currents you would like to use? (current1, current2, current3, in mA)" << endl;
-	cin >> current1;
-	//cin >> current2;
-	//cin >> current3;
-	
-	// create your spectrometer
-	Spectrometer* ham = new Spectrometer();
-	char temp;
+		cout << "What is the distance (in mm) between two measurements on the x axis?" << endl;
+		cin >> x_Dis;
 
+		cout << "How many measurements you would like to take on the x axis?" << endl;
+		cin >> x_NumbOfMeas;
 
-	cout << "Press any key to Start Measurement!" << endl;
-	cin >> temp;
-
-	cout << "Now you have 40 seconds to leave the room!" << endl;
-	sleep(30);
-	cout << "Ten secounds..." << endl;
-	sleep(10);
-
-	cout << "Starting measurements..." << endl;
-
-	double posx=0, posy=0;
-	vector<vector<double> > Result;
-	vector<vector<double> > Result1;
-	vector<vector<double> > Result2;
-	vector<vector<double> > Result3;
-	stringstream path;
-
-
-	for (int i = 1; i <= x_NumbOfSteps; i++)
-	{	
-
-		cout << "Current x position: " << posx << "mm" << endl;
-
-		for (int j = 0; j <= y_NumbOfSteps; j++)
-		{	
-
-			posy = j*y_Step;
-			cout << "Current y position: " << posy << "mm" << endl;	
-
-			LEDoff();
-			cout << "Start dark measurement..." << endl;
-			Result = StartMeasurement(ham, IntTime, NumberOfAverages);
-
-			sleep(5);
-
-			LEDon(current1);
-			cout << "Start light measurement with " << current1 << " mA..." << endl;
-			Result1 = StartMeasurement(ham, IntTime, NumberOfAverages);
-
-			sleep(5);
-/*
-			LEDon(current2);
-			cout << "Start light measurement with " << current2 << " mA..." << endl;
-			Result2 = StartMeasurement(ham, IntTime, NumberOfAverages);
-
-			sleep(5);
-
-			LEDon(current3);
-			cout << "Start light measurement with " << current3 << " mA..." << endl;
-			Result3 = StartMeasurement(ham, IntTime, NumberOfAverages);
-			
-
-			sleep(5);*/
-			LEDoff();
-
-			path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm_y=" << posy <<"mm.txt";
-			//cout << path.str() << endl;
-			SaveMeasurementD1L(Result, Result1, path.str());
-			path.str("");
-			
-			if (j<y_NumbOfSteps)
-			{
-				MotorControl::MoveRelative(Motor, "y", MotorControl::CalcStepsY(y_Step), Address, Status, Value);
-				sleep(2);
-			}
-			
-		}
-
-		posx=i*x_Step;
-
-		if (i<x_NumbOfSteps)
-		{
-			MotorControl::MoveAbsolute(Motor, "y", y_StartPosition, Address, Status, Value);
-
-			MotorControl::MoveRelative(Motor, "x", MotorControl::CalcStepsX(x_Step), Address, Status, Value);
-			sleep(2);
-		}
-		
+		//Go to start position
+		cout << "Going to start position..." << endl;
+		// x axis
+		Mot->MoveAbsolute("x", x_MotorSteps);
 
 	}
 
+	if(yaxis == true){
+		Table->xyTableMeasurementBothAxis();
+	}
+
+	else if(yaxis == false){
+		Table->xyTableMeasurementOnlyXAxis();
+	}
+
+	else cout << "Something went wrong..." << endl; exit(EXIT_FAILURE);
+
+
 	return 0;	
 }	
-
-
-
-
-
 
 
 
