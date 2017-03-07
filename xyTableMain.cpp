@@ -144,30 +144,16 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	//Fix parameters
-	//y axis
-	double y_StartPosition = 0; // in mm, used to calculate no of steps for the motor
-	int y_MotorSteps = 0;
-	double y_Dis = 0; // distance between two measurements
-	int y_NumbOfMeas = 0;
-	//x axis
-	double x_StartPosition = 0; // in mm, used to calculate no of steps for the motor
-	int x_MotorSteps = 0;
-	double x_Dis = 0; // distance between two measurements
-	int x_NumbOfMeas = 0;
-
-	bool yaxis = false;
-
 	cout << "Do you want to use the y axis?" << endl;
 	cin >> input;
 
 	if((input=='y') | (input=='Y')){
 
-		yaxis = true;
+		//yaxis = true;
 
 		cout << "What is the start position (in mm) on the x axis?" << endl;
 		cin >> x_StartPosition;
-		x_MotorSteps = Mot->CalcStepsX(x_StartPosition);
+		int x_MotorSteps = Mot->CalcStepsX(x_StartPosition);
 
 		cout << "What is the distance (in mm) between two measurements on the x axis?" << endl;
 		cin >> x_Dis;
@@ -177,7 +163,7 @@ int main(int argc, char* argv[])
 
 		cout << "What is the start position (in mm) on the y axis?" << endl;
 		cin >> y_StartPosition;
-		y_MotorSteps = Mot->CalcStepsY(y_StartPosition);
+		int y_MotorSteps = Mot->CalcStepsY(y_StartPosition);
 
 		cout << "What is the distance (in mm) between two measurements on the y axis?" << endl;
 		cin >> y_Dis;
@@ -195,7 +181,7 @@ int main(int argc, char* argv[])
 	}
 
 	else if ((input == 'n') | (input == 'N')){
-		yaxis = false;
+		//yaxis = false;
 
 		cout << "Only using  X AXIS!" << endl;
 

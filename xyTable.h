@@ -17,19 +17,19 @@ class xyTable
 		virtual ~xyTable(){};
 		void xyTableMeasurementOnlyXAxis();
 		void xyTableMeasurementBothAxis();
-		bool Sety_StartPosition(double ystart);
-		bool Setx_StartPosition(double xstart);
+		bool Set_y_StartPosition(double ystart);
+		bool Set_x_StartPosition(double xstart);
+		bool Set_x_Dis(double xDis);
+		bool Set_y_Dis(double yDis);
 
 
 	private:
 		//y axis
 		double _y_StartPosition; // in mm, used to calculate no of steps for the motor
-		int _y_MotorSteps;
 		double _y_Dis; // distance between two measurements
 		int _y_NumbOfMeas;
 		//x axis
 		double _x_StartPosition; // in mm, used to calculate no of steps for the motor
-		int _x_MotorSteps;
 		double _x_Dis; // distance between two measurements
 		int _x_NumbOfMeas;
 
