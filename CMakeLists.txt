@@ -47,5 +47,6 @@ add_library(xyTable xyTable.cpp)
 
 
 add_executable( xyTableMain xyTableMain.cpp)
+#add_executable( xyTableMain xyTableMainTest.cpp)
 target_link_libraries( xyTableMain xyTable MotorControl Spectrometer SpecMeas LED)
 

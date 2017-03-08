@@ -7,6 +7,9 @@
 //
 //
 
+// Motor Control
+#include "../MotorControl/Motor.h"
+
 #ifndef ____xyTable__
 #define ____xyTable__
 
@@ -15,22 +18,22 @@ class xyTable
 	public:
 		xyTable();
 		virtual ~xyTable(){};
-		void xyTableMeasurementOnlyXAxis();
-		void xyTableMeasurementBothAxis();
+		void xyTableMeasurementOnlyXAxis(Motor *Mot);
+		void xyTableMeasurementBothAxis(Motor *Mot);
 		bool Set_y_StartPosition(double ystart);
 		bool Set_x_StartPosition(double xstart);
 		bool Set_x_Dis(double xDis);
 		bool Set_y_Dis(double yDis);
-		bool Set_y_NumbOfMeas(double yNumMeas);
-		bool Set_x_NumbOfMeas(double xNumMeas);
-		bool Set_UsageYaxis(bool usageY);
+		bool Set_y_NumbOfMeas(int yNumMeas);
+		bool Set_x_NumbOfMeas(int xNumMeas);
+		bool Set_Usage_Yaxis(bool usageY);
 		double Get_y_StartPosition();
 		double Get_x_StartPosition();
 		double Get_y_Dis();
 		double Get_x_Dis();
 		int Get_y_NumbOfMeas();
 		int Get_x_NumbOfMeas();
-		bool Get_UsageYaxis();
+		bool Get_Usage_Yaxis();
 	
 
 

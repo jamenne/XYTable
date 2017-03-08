@@ -75,6 +75,8 @@ int main(int argc, char* argv[])
 	unsigned char Status = 0;
 	int Value = 0;
 
+	cout << "Looking for Motors. This may take a few seconds..." << endl;
+
 	Motor *Mot = new Motor(Address,Status,Value);
 
 	xyTable *Table = new xyTable();
@@ -147,29 +149,38 @@ int main(int argc, char* argv[])
 	cout << "Do you want to use the y axis?" << endl;
 	cin >> input;
 
+	double d_input;
+	int i_input;
+
 	if((input=='y') | (input=='Y')){
 
-		//yaxis = true;
+		Table->Set_Usage_Yaxis(true);
 
 		cout << "What is the start position (in mm) on the x axis?" << endl;
-		cin >> x_StartPosition;
-		int x_MotorSteps = Mot->CalcStepsX(x_StartPosition);
+		cin >> d_input;
+		Table->Set_x_StartPosition(d_input);
+		int x_MotorSteps = Mot->CalcStepsX(Table->Get_x_StartPosition());
 
 		cout << "What is the distance (in mm) between two measurements on the x axis?" << endl;
-		cin >> x_Dis;
+		cin >> d_input;
+		Table->Set_x_Dis(d_input);
 
 		cout << "How many measurements you would like to take on the x axis?" << endl;
-		cin >> x_NumbOfMeas;
+		cin >> i_input;
+		Table->Set_x_NumbOfMeas(i_input);
 
 		cout << "What is the start position (in mm) on the y axis?" << endl;
-		cin >> y_StartPosition;
-		int y_MotorSteps = Mot->CalcStepsY(y_StartPosition);
+		cin >> d_input;
+		Table->Set_y_StartPosition(d_input);
+		int y_MotorSteps = Mot->CalcStepsY(Table->Get_y_StartPosition());
 
 		cout << "What is the distance (in mm) between two measurements on the y axis?" << endl;
-		cin >> y_Dis;
+		cin >> d_input;
+		Table->Set_y_Dis(d_input);
 
 		cout << "How many measurements you would like to take on the y axis?" << endl;
-		cin >> y_NumbOfMeas;
+		cin >> i_input;
+		Table->Set_y_NumbOfMeas(i_input);
 
 		//Go to start position
 		cout << "Going to start position..." << endl;
@@ -181,19 +192,23 @@ int main(int argc, char* argv[])
 	}
 
 	else if ((input == 'n') | (input == 'N')){
-		//yaxis = false;
+
+		Table->Set_Usage_Yaxis(false);
 
 		cout << "Only using  X AXIS!" << endl;
 
 		cout << "What is the start position (in mm) on the x axis?" << endl;
-		cin >> x_StartPosition;
-		x_MotorSteps = Mot->CalcStepsX(x_StartPosition);
+		cin >> d_input;
+		Table->Set_x_StartPosition(d_input);
+		int x_MotorSteps = Mot->CalcStepsX(Table->Get_x_StartPosition());
 
 		cout << "What is the distance (in mm) between two measurements on the x axis?" << endl;
-		cin >> x_Dis;
+		cin >> d_input;
+		Table->Set_x_Dis(d_input);
 
 		cout << "How many measurements you would like to take on the x axis?" << endl;
-		cin >> x_NumbOfMeas;
+		cin >> i_input;
+		Table->Set_x_NumbOfMeas(i_input);
 
 		//Go to start position
 		cout << "Going to start position..." << endl;
@@ -202,18 +217,26 @@ int main(int argc, char* argv[])
 
 	}
 
-	if(yaxis == true){
-		Table->xyTableMeasurementBothAxis();
+	if(Table->Get_Usage_Yaxis()==true){
+		Table->xyTableMeasurementBothAxis(Mot);
 	}
 
-	else if(yaxis == false){
-		Table->xyTableMeasurementOnlyXAxis();
+	else if(Table->Get_Usage_Yaxis()==false){
+		Table->xyTableMeasurementOnlyXAxis(Mot);
+		//Go to start position
+		cout << "Going back to start position..." << endl;
+		// x axis
+		Mot->MoveAbsolute("x", Mot->CalcStepsX(Table->Get_x_StartPosition()));
+		cout << "Measurements finished!" << endl;
 	}
 
-	else cout << "Something went wrong..." << endl; exit(EXIT_FAILURE);
+	else {
+		cout << "Something went wrong..." << endl;
+		exit(EXIT_FAILURE);
+	}
 
 
-	return 0;	
+	return 0;
 }	
 
 
