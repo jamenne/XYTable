@@ -25,6 +25,39 @@ xyTable::xyTable(){
 
 }
 
+double xyTable::Get_y_StartPosition(){
+	return this->_y_StartPosition;
+}
+
+double xyTable::Get_x_StartPosition(){
+	return this->_x_StartPosition;
+}
+
+double xyTable::Get_y_Dis(){
+	return this->_y_Dis;
+}
+
+double xyTable::Get_x_Dis(){
+	return this->_x_Dis;
+}
+
+int xyTable::Get_y_NumbOfMeas(){
+	return this->_y_NumbOfMeas;
+}
+
+int xyTable::Get_x_NumbOfMeas(){
+	return this->_x_NumbOfMeas;
+}
+
+bool xyTable::Get_UsageYaxis(){
+	return this->_yaxis;
+}
+
+bool xyTable::Set_UsageYaxis(bool usageY){
+	this->_yaxis = usageY;
+	return true;
+}
+
 bool xyTable::Set_y_StartPosition(double ystart){
 	if(ystart > 0 && ystart < 100){
 		this->_y_StartPosition = ystart;	
@@ -69,6 +102,30 @@ bool xyTable::Set_y_Dis(double yDis){
 
 	else{
 		cout << "y distance needs to be > 0 and < 100mm" << endl;
+		return false;
+	}
+}
+
+bool xyTable::Set_y_NumbOfMeas(double yNumMeas){
+	if(yNumMeas > 0){
+		this->_y_Dis = yNumMeas;	
+		return true;
+	}
+
+	else{
+		cout << "Number of Measurements in y needs to be > 0" << endl;
+		return false;
+	}
+}
+
+bool xyTable::Set_x_NumbOfMeas(double xNumMeas){
+	if(xNumMeas > 0){
+		this->_x_Dis = xNumMeas;	
+		return true;
+	}
+
+	else{
+		cout << "Number of Measurements in x needs to be > 0" << endl;
 		return false;
 	}
 }

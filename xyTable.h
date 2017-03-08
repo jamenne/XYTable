@@ -21,6 +21,17 @@ class xyTable
 		bool Set_x_StartPosition(double xstart);
 		bool Set_x_Dis(double xDis);
 		bool Set_y_Dis(double yDis);
+		bool Set_y_NumbOfMeas(double yNumMeas);
+		bool Set_x_NumbOfMeas(double xNumMeas);
+		bool Set_UsageYaxis(bool usageY);
+		double Get_y_StartPosition();
+		double Get_x_StartPosition();
+		double Get_y_Dis();
+		double Get_x_Dis();
+		int Get_y_NumbOfMeas();
+		int Get_x_NumbOfMeas();
+		bool Get_UsageYaxis();
+	
 
 
 	private:
