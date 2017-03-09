@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	cout << "Do you want to use the y axis?" << endl;
+	cout << "Do you want to use the y axis? [y/n]" << endl;
 	cin >> input;
 
 	double d_input;
@@ -219,11 +219,16 @@ int main(int argc, char* argv[])
 
 	if(Table->Get_Usage_Yaxis()==true){
 		Table->xyTableMeasurementBothAxis(Mot);
+		//Go back to start position
+		cout << "Going back to start position..." << endl;
+		// x axis
+		Mot->MoveAbsolute("x", Mot->CalcStepsX(Table->Get_x_StartPosition()));
+		cout << "Measurements finished!" << endl;
 	}
 
 	else if(Table->Get_Usage_Yaxis()==false){
 		Table->xyTableMeasurementOnlyXAxis(Mot);
-		//Go to start position
+		//Go back to start position
 		cout << "Going back to start position..." << endl;
 		// x axis
 		Mot->MoveAbsolute("x", Mot->CalcStepsX(Table->Get_x_StartPosition()));
