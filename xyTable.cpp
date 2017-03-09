@@ -72,7 +72,7 @@ bool xyTable::Set_Usage_Yaxis(bool usageY){
 }
 
 bool xyTable::Set_y_StartPosition(double ystart){
-	if(ystart > 0 && ystart <= 190){
+	if(ystart >= 0 && ystart <= 190){
 		this->_y_StartPosition = ystart;	
 		return true;
 	}
@@ -84,7 +84,7 @@ bool xyTable::Set_y_StartPosition(double ystart){
 }
 
 bool xyTable::Set_x_StartPosition(double xstart){
-	if(xstart > 0 && xstart < 2500){
+	if(xstart >= 0 && xstart < 2500){
 		this->_x_StartPosition = xstart;	
 		return true;
 	}
@@ -265,5 +265,142 @@ void xyTable::xyTableMeasurementOnlyXAxis(Motor *Mot){
 
 void xyTable::xyTableMeasurementBothAxis(Motor *Mot){
 
+
+	Spectrometer *ham = new Spectrometer();
+	cout << "Spectrometer created!" << endl;
+
+	LED *led = new LED();
+	cout << "LED created!" << endl;
+
+	SpecMeasurement *SpecMeas = new SpecMeasurement();
+
+	double current1, current2, current3;
+
+	char input;
+	bool ThreeLightMeas = false;
+
+	cout << "Do you want to take a 3 light measurement? (Y/N)" << endl;
+	cin >> input;
+
+	if((input=='y') | (input=='Y')){
+
+		ThreeLightMeas = true;
+
+		cout << "Which currents you would like to use? (current1, current2, current3 in mA)" << endl;
+		cout << "Enter 1st current..." << endl;
+		cin >> current1;
+		cout << "Enter 2nd current..." << endl;
+		cin >> current2;
+		cout << "Enter 3rd current..." << endl;
+		cin >> current3;
+
+	}
+
+	else if((input=='n') | (input=='N')){
+
+		ThreeLightMeas = false;
+
+		cout << "Which current you would like to use? (current in mA)" << endl;
+		cin >> current1;
+
+	}
+
+	else{
+		cout << "You should have entered N or Y!" << endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	int IntTime;
+	cout << "Which integration time you would like to use for the Spectrometer? (10000-10000000µs)" << endl;
+	cin >> IntTime;
+
+	int NumberOfAverages;
+	cout << "How many averages would you like to take?" << endl;
+	cin >> NumberOfAverages;
+
+	//********** Start of Measurement **********//
+
+	char temp;
+	stringstream path;
+
+	cout << "Press any key to Start Measurement!" << endl;
+	cin >> temp;
+
+	cout << "Now you have 40 seconds to leave the room!" << endl;
+	sleep(30);
+	cout << "Ten secounds..." << endl;
+	sleep(10);
+
+	cout << "Starting measurements..." << endl;
+	double posx, posy=0;
+
+	for(int i = 1; i<=this->Get_x_NumbOfMeas(); i++){
+
+		cout << "Current x position: " << posx << "mm" << endl;
+
+		posy = 0;
+
+		for(int j = 1; j <=this->Get_y_NumbOfMeas(); j++){
+
+			cout << "Current y position: " << posy << "mm" << endl;
+
+			path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm_y=" << posy <<"mm.txt";
+
+			//********** Spectrometer Measurement **********//
+
+			if(SpecMeas->SetNumbOfAv(NumberOfAverages) && ham->SetIntegrationTime(IntTime)){
+
+				if(ThreeLightMeas==true){
+
+					SpecMeas->Measurement3LWithDC(ham, led, current1, current2, current3, path.str());
+					path.str("");
+					
+				}
+
+				else if(ThreeLightMeas==false){
+
+					led->SetCurr(current1);
+					SpecMeas->SingleMeasurementWithDC(ham, led, path.str());
+					path.str("");
+					
+				}
+
+
+				else exit(EXIT_FAILURE);
+			}
+
+			else exit(EXIT_FAILURE);
+
+			//*******************************************//
+
+			// Move to the next y position
+
+			posy=j*this->Get_y_Dis();
+
+			if(posy < this->Get_y_NumbOfMeas()*this->Get_y_Dis()){
+
+				Mot->MoveRelative("y", Mot->CalcStepsY(this->Get_y_Dis()));
+				
+				// Wait 1 second to let Motor move //
+				sleep(1);
+			}
+
+		}
+		//********** Go back to y-Startposition for the next x-Position **********//
+		Mot->MoveAbsolute("y", Mot->CalcStepsY(this->Get_y_StartPosition()));
+
+		
+		//********** Move Motor to next x Position **********//
+		posx=i*this->Get_x_Dis();
+
+		if(posx < this->Get_x_NumbOfMeas()*this->Get_x_Dis()){
+
+			Mot->MoveRelative("x", Mot->CalcStepsX(this->Get_x_Dis()));
+			
+			// Wait 2 second to let Motor move //
+			sleep(2);
+		}
+
+	}
 	
 }
