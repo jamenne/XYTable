@@ -79,6 +79,8 @@ int main(int argc, char* argv[])
 
 	Motor *Mot = new Motor(Address,Status,Value);
 
+	Mot->ConnectMotor();
+
 	xyTable *Table = new xyTable();
 
 	char input;
