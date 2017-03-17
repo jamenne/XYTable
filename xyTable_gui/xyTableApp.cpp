@@ -48,6 +48,8 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   _Spec_y()
 {
 
+this->_Mot->ConnectMotor();
+
   QSize buttonSize(200,20);
   QStatusBar *StatusBar = new QStatusBar();
   stringstream helper;
@@ -255,8 +257,10 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
 
   QPushButton *Btn_SearchMotor = new QPushButton("Connect Motor", this);
   Btn_SearchMotor->setFixedSize(buttonSize);
+  Btn_SearchMotor->setEnabled(false);
   connect(Btn_SearchMotor, &QPushButton::clicked, [=]() {
 		this->_Mot->ConnectMotor();
+    Btn_SearchMotor->setEnabled(false);
 	});
 
   // Reference Run
@@ -291,9 +295,9 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   MeasStart->addWidget(Start1);
   MeasStart->setFixedSize(buttonSize);
 
-  connect(Start0, &QPushButton::clicked, [=]() {this->xyTableMeasurementBothAxis(PathLineEdit, Current1SpinBox, Current2SpinBox, Current3SpinBox); 
+  connect(Start0, &QPushButton::clicked, [=]() {this->xyTableMeasurementBothAxis(StatusBar, PathLineEdit, Current1SpinBox, Current2SpinBox, Current3SpinBox); 
   												});
-  connect(Start1, &QPushButton::clicked, [=]() {this->xyTableMeasurementOnlyXAxis(PathLineEdit, Current1SpinBox, Current2SpinBox, Current3SpinBox); 
+  connect(Start1, &QPushButton::clicked, [=]() {this->xyTableMeasurementOnlyXAxis(StatusBar, PathLineEdit, Current1SpinBox, Current2SpinBox, Current3SpinBox); 
   												});
 
   // Spin Boxes for XY Table Parameters
@@ -304,7 +308,11 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   StartPosXBox->setValue(0.00);
   this->_Table->Set_x_StartPosition(0.00);
   QObject::connect(StartPosXBox, QOverload< double >::of(&QDoubleSpinBox::valueChanged), [=](double newValue) {
-  this->_Table->Set_x_StartPosition(newValue); 
+  this->_Table->Set_x_StartPosition(newValue);
+  stringstream helper;
+  helper << "Startposition on X set to  " << newValue << "mm";
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
 	});
 
   QLabel *StartPosYLabel = new QLabel(tr("Startpostion Y / mm:"));
@@ -314,7 +322,11 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   StartPosYBox->setValue(0.00);
   this->_Table->Set_y_StartPosition(0.00);
   QObject::connect(StartPosYBox, QOverload< double >::of(&QDoubleSpinBox::valueChanged), [=](double newValue) {
-  this->_Table->Set_y_StartPosition(newValue); 
+  this->_Table->Set_y_StartPosition(newValue);
+  stringstream helper;
+  helper << "Startposition on Y set to  " << newValue << "mm";
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
 	});
 
   QLabel *DisXLabel = new QLabel(tr("Distance in X / mm:"));
@@ -324,7 +336,11 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   DisXBox->setValue(1.00);
   this->_Table->Set_x_Dis(1.00);
   QObject::connect(DisXBox, QOverload< double >::of(&QDoubleSpinBox::valueChanged), [=](double newValue) {
-  this->_Table->Set_x_Dis(newValue); 
+  this->_Table->Set_x_Dis(newValue);
+  stringstream helper;
+  helper << "Distance on X set to  " << newValue << "mm";
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
 	});
 
   QLabel *DisYLabel = new QLabel(tr("Distance in Y / mm:"));
@@ -335,6 +351,10 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   this->_Table->Set_y_Dis(1.00);
   QObject::connect(DisYBox, QOverload< double >::of(&QDoubleSpinBox::valueChanged), [=](double newValue) {
   this->_Table->Set_y_Dis(newValue); 
+  stringstream helper;
+  helper << "Distance on Y set to  " << newValue << "mm";
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
 	});
 
   QLabel *NumMeasXLabel = new QLabel(tr("Number of Measurements in X:"));
@@ -344,7 +364,11 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   NumMeasXBox->setValue(1);
   this->_Table->Set_x_NumbOfMeas(1);
   QObject::connect(NumMeasXBox, QOverload< int >::of(&QSpinBox::valueChanged), [=](int newValue) {
-  this->_Table->Set_x_NumbOfMeas(newValue); 
+  this->_Table->Set_x_NumbOfMeas(newValue);
+  stringstream helper;
+  helper << "Number of Measurements on X set to  " << newValue;
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
 	});
 
 
@@ -356,6 +380,10 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   this->_Table->Set_y_NumbOfMeas(1);
   QObject::connect(NumMeasYBox, QOverload< int >::of(&QSpinBox::valueChanged), [=](int newValue) {
   this->_Table->Set_y_NumbOfMeas(newValue); 
+  stringstream helper;
+  helper << "Number of Measurements on Y set to  " << newValue;
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
 	});
 
   StartPosXBox->setEnabled( true );
@@ -508,22 +536,40 @@ void xyTable_App::SpecMeasChanged(QStackedWidget *MeasButton, QLineEdit *PathLin
 }
 
 
-void xyTable_App::xyTableMeasurementOnlyXAxis(QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox){
+void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox){
+
+	cout << "Going to Startposition..." << endl;
+	stringstream helper;
+	helper << "Going to Startposition...";
+	string helper2 = helper.str();
+	this->ShowMessage(StatusBar, helper2, 2000);
+	helper.str("");
+
+	this->_Mot->MoveAbsolute("x", this->_Mot->CalcStepsX(this->_Table->Get_x_StartPosition()));
 
 	//********** Start of Measurement **********//
 
 	stringstream path;
 
 	cout << "Starting measurements..." << endl;
+	helper << "Starting measurements...";
+	helper2 = helper.str();
+	this->ShowMessage(StatusBar, helper2, 2000);
+	helper.str("");
+
 	double posx=0;
 
 	for(int i = 1; i<=this->_Table->Get_x_NumbOfMeas(); i++){
 
 		cout << "Current x position: " << posx << "mm" << endl;
+		helper << "Current x position: " << posx << "mm";
+		helper2 = helper.str();
+		this->ShowMessage(StatusBar, helper2, 2000);
+		helper.str("");
 
-		//path << PathLineEdit->text().toStdString() << "Spectrum_x=" << posx << "mm_y=" << posy <<"mm.txt";
+		path << PathLineEdit->text().toStdString() << "Spectrum_x=" << posx << "mm.txt";
 
-		path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm.txt";
+		//path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm.txt";
 
 		//********** Spectrometer Measurement **********//
 
@@ -562,11 +608,25 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QLineEdit *PathLineEdit, QDoubleSp
 
 	}
 
+	//Go back to start position
+	cout << "Going back to start position..." << endl;
+	helper << "Going back to start position...";
+	helper2 = helper.str();
+	this->ShowMessage(StatusBar, helper2, 2000);
+	helper.str("");
+	// x axis
+	this->_Mot->MoveAbsolute("x", this->_Mot->CalcStepsX(this->_Table->Get_x_StartPosition()));
+	cout << "Measurements finished!" << endl;
+	helper << "Measurements finished!";
+	helper2 = helper.str();
+	this->ShowMessage(StatusBar, helper2, 2000);
+	helper.str("");
+
 
 
 }
 
-void xyTable_App::xyTableMeasurementBothAxis(QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox){
+void xyTable_App::xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox){
 
 	stringstream path;
 
@@ -641,6 +701,12 @@ void xyTable_App::xyTableMeasurementBothAxis(QLineEdit *PathLineEdit, QDoubleSpi
 		}
 
 	}
+
+	//Go back to start position
+	cout << "Going back to start position..." << endl;
+	// x axis
+	this->_Mot->MoveAbsolute("x", this->_Mot->CalcStepsX(this->_Table->Get_x_StartPosition()));
+	cout << "Measurements finished!" << endl;
 	
 }
 

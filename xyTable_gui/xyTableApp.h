@@ -30,8 +30,8 @@ class xyTable_App : public QWidget {
 		void ShowMessage(QStatusBar *StatusBar, string &Message, int Time);
 		void ReloadPlot(QCustomPlot *Plot);
 		void SpecMeasChanged(QStackedWidget *MeasButton, QLineEdit *PathLineEdit, QComboBox *SpecMeasComboBox, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox, QPushButton *Btn_Plot);
-		void xyTableMeasurementOnlyXAxis(QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox);
-		void xyTableMeasurementBothAxis(QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox);
+		void xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox);
+		void xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox);
 
 	private:
 		Spectrometer *_Spec;
