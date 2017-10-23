@@ -78,7 +78,7 @@ bool xyTable::Set_y_StartPosition(double ystart){
 	}
 
 	else{
-		cout << "y Start position needs to be > 0 and < 100mm" << endl;
+		cout << "y Start position needs to be > 0 and < 190mm" << endl;
 		return false;
 	}
 }
@@ -103,6 +103,8 @@ bool xyTable::Set_x_Dis(double xDis){
 
 	else{
 		cout << "x distance needs to be > 0 and < 2500mm" << endl;
+		this->_x_Dis = 100;
+		cout << "x distance set to 100mm" << endl;
 		return false;
 	}
 }
@@ -115,6 +117,8 @@ bool xyTable::Set_y_Dis(double yDis){
 
 	else{
 		cout << "y distance needs to be > 0 and < 100mm" << endl;
+		this->_y_Dis = 10;
+		cout << "y distance set to 10mm" << endl;
 		return false;
 	}
 }
@@ -206,12 +210,12 @@ void xyTable::xyTableMeasurementOnlyXAxis(Motor *Mot){
 	cin >> temp;
 
 	cout << "Now you have 40 seconds to leave the room!" << endl;
-	sleep(30);
+	//sleep(30);
 	cout << "Ten secounds..." << endl;
-	sleep(10);
+	//sleep(10);
 
 	cout << "Starting measurements..." << endl;
-	double posx=0;
+	double posx=this->Get_x_StartPosition();
 
 	for(int i = 1; i<=this->Get_x_NumbOfMeas(); i++){
 
@@ -247,9 +251,10 @@ void xyTable::xyTableMeasurementOnlyXAxis(Motor *Mot){
 		//*******************************************//
 
 		//********** Move Motor to next Position **********//
-		posx=i*this->Get_x_Dis();
+		posx=(i*this->Get_x_Dis()) + this->Get_x_StartPosition();
+		//cout << posx << endl;
 
-		if(posx < this->Get_x_NumbOfMeas()*this->Get_x_Dis()){
+		if(posx < (this->Get_x_NumbOfMeas()*this->Get_x_Dis()) + this->Get_x_StartPosition()){
 
 			Mot->MoveRelative("x", Mot->CalcStepsX(this->Get_x_Dis()));
 			
@@ -327,18 +332,19 @@ void xyTable::xyTableMeasurementBothAxis(Motor *Mot){
 	cin >> temp;
 
 	cout << "Now you have 40 seconds to leave the room!" << endl;
-	sleep(30);
+	//sleep(30);
 	cout << "Ten secounds..." << endl;
-	sleep(10);
+	//sleep(10);
 
 	cout << "Starting measurements..." << endl;
-	double posx, posy=0;
+	double posx = this->Get_x_StartPosition();
+	double posy = this->Get_y_StartPosition();
 
 	for(int i = 1; i<=this->Get_x_NumbOfMeas(); i++){
 
 		cout << "Current x position: " << posx << "mm" << endl;
 
-		posy = 0;
+		posy = this->Get_y_StartPosition();
 
 		for(int j = 1; j <=this->Get_y_NumbOfMeas(); j++){
 
@@ -375,9 +381,9 @@ void xyTable::xyTableMeasurementBothAxis(Motor *Mot){
 
 			// Move to the next y position
 
-			posy=j*this->Get_y_Dis();
+			posy=(j*this->Get_y_Dis()) + this->Get_y_StartPosition();
 
-			if(posy < this->Get_y_NumbOfMeas()*this->Get_y_Dis()){
+			if(posy < (this->Get_y_NumbOfMeas()*this->Get_y_Dis()) + this->Get_y_StartPosition()){
 
 				Mot->MoveRelative("y", Mot->CalcStepsY(this->Get_y_Dis()));
 				
@@ -391,9 +397,9 @@ void xyTable::xyTableMeasurementBothAxis(Motor *Mot){
 
 		
 		//********** Move Motor to next x Position **********//
-		posx=i*this->Get_x_Dis();
+		posx=(i*this->Get_x_Dis()) + this->Get_x_StartPosition();
 
-		if(posx < this->Get_x_NumbOfMeas()*this->Get_x_Dis()){
+		if(posx < (this->Get_x_NumbOfMeas()*this->Get_x_Dis()) + this->Get_x_StartPosition()) {
 
 			Mot->MoveRelative("x", Mot->CalcStepsX(this->Get_x_Dis()));
 			
