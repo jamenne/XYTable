@@ -61,21 +61,21 @@ this->_Mot->ConnectMotor();
   QLabel *Current1Label = new QLabel(tr("Current1 / mA:"));
   QDoubleSpinBox *Current1SpinBox = new QDoubleSpinBox;
   Current1SpinBox->setRange(0., 20.);
-  Current1SpinBox->setSingleStep(0.01);
-  Current1SpinBox->setValue(0.00);
-  this->_Led->SetCurr(0.00);
+  Current1SpinBox->setSingleStep(0.001);
+  Current1SpinBox->setValue(0.000);
+  this->_Led->SetCurr(0.000);
   QLabel *Current2Label = new QLabel(tr("Current2 / mA:"));
   QDoubleSpinBox *Current2SpinBox = new QDoubleSpinBox;
   Current2SpinBox->setRange(0., 20.);
-  Current2SpinBox->setSingleStep(0.01);
-  Current2SpinBox->setValue(0.00);
-  this->_Led->SetCurr(0.00);
+  Current2SpinBox->setSingleStep(0.001);
+  Current2SpinBox->setValue(0.000);
+  this->_Led->SetCurr(0.000);
   QLabel *Current3Label = new QLabel(tr("Current3 / mA:"));
   QDoubleSpinBox *Current3SpinBox = new QDoubleSpinBox;
   Current3SpinBox->setRange(0., 20.);
-  Current3SpinBox->setSingleStep(0.01);
-  Current3SpinBox->setValue(0.00);
-  this->_Led->SetCurr(0.00);
+  Current3SpinBox->setSingleStep(0.001);
+  Current3SpinBox->setValue(0.000);
+  this->_Led->SetCurr(0.000);
   
   Current1SpinBox->setEnabled( false );
   Current2SpinBox->setEnabled( false );
@@ -195,7 +195,7 @@ this->_Mot->ConnectMotor();
   Button3->setFixedSize(buttonSize);
 
   Button0->setEnabled( false );
-
+  
   QStackedWidget *MeasButton = new QStackedWidget();
   MeasButton->addWidget(Button0);
   MeasButton->addWidget(Button1);
@@ -282,13 +282,14 @@ this->_Mot->ConnectMotor();
 		this->ShowMessage(StatusBar, helper2, 2000);													
   	});
 
-  // Start Measurement Button
+  // Start xy-Table Measurement Button
   QPushButton *Start0 = new QPushButton("Start Measurement", this);
   QPushButton *Start1 = new QPushButton("Start Measurement", this);
 
   Start0->setFixedSize(buttonSize);
   Start1->setFixedSize(buttonSize);
-  Start0->setEnabled( false );
+  Start0->setEnabled( false );\
+  Start1->setEnabled( false );
 
   QStackedWidget *MeasStart = new QStackedWidget();
   MeasStart->addWidget(Start0);
@@ -532,6 +533,7 @@ void xyTable_App::SpecMeasChanged(QStackedWidget *MeasButton, QLineEdit *PathLin
       Current3SpinBox->setEnabled( false );
 
       this->_ThreeLightMeas = false;
+
     }
 }
 
@@ -549,6 +551,19 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 
 	//********** Start of Measurement **********//
 
+	cout << "Now you have 40 seconds to leave the room!" << endl;
+	helper << "Now you have 40 seconds to leave the room!";
+	helper2 = helper.str();
+	this->ShowMessage(StatusBar, helper2, 2000);
+	helper.str("");
+	//sleep(30);
+	cout << "Ten secounds..." << endl;
+	helper << "Ten secounds...";
+	helper2 = helper.str();
+	this->ShowMessage(StatusBar, helper2, 2000);
+	helper.str("");
+	//sleep(10);
+
 	stringstream path;
 
 	cout << "Starting measurements..." << endl;
@@ -557,7 +572,7 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 	this->ShowMessage(StatusBar, helper2, 2000);
 	helper.str("");
 
-	double posx=0;
+	double posx=this->_Table->Get_x_StartPosition();
 
 	for(int i = 1; i<=this->_Table->Get_x_NumbOfMeas(); i++){
 
@@ -567,9 +582,13 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 		this->ShowMessage(StatusBar, helper2, 2000);
 		helper.str("");
 
-		path << PathLineEdit->text().toStdString() << "Spectrum_x=" << posx << "mm.txt";
+    if(PathLineEdit->text().toStdString() == ""){
+      path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm.txt";
+      //cout << "Used default path for saving files: " << path << endl;
+    }
 
-		//path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm.txt";
+    else path << PathLineEdit->text().toStdString() << "Spectrum_x=" << posx << "mm.txt";
+
 
 		//********** Spectrometer Measurement **********//
 
@@ -596,9 +615,9 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 		//*******************************************//
 
 		//********** Move Motor to next Position **********//
-		posx=i*this->_Table->Get_x_Dis();
+		posx=(i*this->_Table->Get_x_Dis()) + this->_Table->Get_x_StartPosition();
 
-		if(posx < this->_Table->Get_x_NumbOfMeas()*this->_Table->Get_x_Dis()){
+		if(posx < (this->_Table->Get_x_NumbOfMeas()*this->_Table->Get_x_Dis()) + this->_Table->Get_x_StartPosition()){
 
 			this->_Mot->MoveRelative("x", this->_Mot->CalcStepsX(this->_Table->Get_x_Dis()));
 			
