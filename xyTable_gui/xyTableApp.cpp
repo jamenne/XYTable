@@ -615,7 +615,7 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 		//*******************************************//
 
 		//********** Move Motor to next Position **********//
-		posx=(i*this->_Table->Get_x_Dis()) + this->_Table->Get_x_StartPosition();
+		posx = (i*this->_Table->Get_x_Dis()) + this->_Table->Get_x_StartPosition();
 
 		if(posx < (this->_Table->Get_x_NumbOfMeas()*this->_Table->Get_x_Dis()) + this->_Table->Get_x_StartPosition()){
 
@@ -647,26 +647,42 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 
 void xyTable_App::xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *PathLineEdit, QDoubleSpinBox *Current1SpinBox, QDoubleSpinBox *Current2SpinBox, QDoubleSpinBox *Current3SpinBox){
 
+  cout << "Going to Startpositions..." << endl;
+  stringstream helper;
+  helper << "Going to Startpositions...";
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
+  helper.str("");
+
+  this->_Mot->MoveAbsolute("x", this->_Mot->CalcStepsX(this->_Table->Get_x_StartPosition()));
+  this->_Mot->MoveAbsolute("y", this->_Mot->CalcStepsY(this->_Table->Get_y_StartPosition()));
+
+
 	stringstream path;
 
 	//********** Start of Measurement **********//
 
 	cout << "Starting measurements..." << endl;
-	double posx, posy=0;
+  double posx = this->_Table->Get_x_StartPosition();
+  double posy = this->_Table->Get_y_StartPosition();
 
 	for(int i = 1; i<=this->_Table->Get_x_NumbOfMeas(); i++){
 
 		cout << "Current x position: " << posx << "mm" << endl;
 
-		posy = 0;
+		posy = this->_Table->Get_y_StartPosition();
 
 		for(int j = 1; j <=this->_Table->Get_y_NumbOfMeas(); j++){
 
 			cout << "Current y position: " << posy << "mm" << endl;
 
-			//path << PathLineEdit->text().toStdString() << "Spectrum_x=" << posx << "mm_y=" << posy <<"mm.txt";
+			if(PathLineEdit->text().toStdString() == ""){
+      path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm_y=" << posy << "mm.txt";
+      //cout << "Used default path for saving files: " << path << endl;
+       }
 
-			path << "/home/xytable/data/Spectrometer/Spectrum_x=" << posx << "mm_y=" << posy <<"mm.txt";
+      else path << PathLineEdit->text().toStdString() << "Spectrum_x=" << posx << "mm_y=" << posy << "mm.txt";
+
 
 			//********** Spectrometer Measurement **********//
 
@@ -691,11 +707,12 @@ void xyTable_App::xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *P
 
 			//*******************************************//
 
+
 			// Move to the next y position
 
-			posy=j*this->_Table->Get_y_Dis();
+			posy=j*this->_Table->Get_y_Dis() + this->_Table->Get_y_StartPosition();
 
-			if(posy < this->_Table->Get_y_NumbOfMeas()*this->_Table->Get_y_Dis()){
+			if( posy < (this->_Table->Get_y_NumbOfMeas()*this->_Table->Get_y_Dis()) + this->_Table->Get_y_StartPosition() ){
 
 				this->_Mot->MoveRelative("y", this->_Mot->CalcStepsY(this->_Table->Get_y_Dis()));
 				
@@ -709,9 +726,9 @@ void xyTable_App::xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *P
 
 		
 		//********** Move Motor to next x Position **********//
-		posx=i*this->_Table->Get_x_Dis();
+		posx = i*this->_Table->Get_x_Dis() + this->_Table->Get_x_StartPosition();
 
-		if(posx < this->_Table->Get_x_NumbOfMeas()*this->_Table->Get_x_Dis()){
+		if(posx < (this->_Table->Get_x_NumbOfMeas()*this->_Table->Get_x_Dis()) + this->_Table->Get_x_StartPosition()){
 
 			this->_Mot->MoveRelative("x", this->_Mot->CalcStepsX(this->_Table->Get_x_Dis()));
 			
@@ -722,9 +739,10 @@ void xyTable_App::xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *P
 	}
 
 	//Go back to start position
-	cout << "Going back to start position..." << endl;
+	cout << "Going back to start positions..." << endl;
 	// x axis
 	this->_Mot->MoveAbsolute("x", this->_Mot->CalcStepsX(this->_Table->Get_x_StartPosition()));
+  this->_Mot->MoveAbsolute("y", this->_Mot->CalcStepsY(this->_Table->Get_y_StartPosition()));
 	cout << "Measurements finished!" << endl;
 	
 }
