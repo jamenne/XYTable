@@ -255,18 +255,10 @@ this->_Mot->ConnectMotor();
   //************* XyTable BOX *************//
   QGroupBox *xyGroup = new QGroupBox(tr("XY Table"));
 
-  QPushButton *Btn_SearchMotor = new QPushButton("Connect Motor", this);
-  Btn_SearchMotor->setFixedSize(buttonSize);
-  Btn_SearchMotor->setEnabled(false);
-  connect(Btn_SearchMotor, &QPushButton::clicked, [=]() {
-		this->_Mot->ConnectMotor();
-    Btn_SearchMotor->setEnabled(false);
-	});
-
   // Reference Run
   QPushButton *Btn_ReferenceX = new QPushButton("Reference Run X", this);
   Btn_ReferenceX->setFixedSize(buttonSize);
-  connect(Btn_SearchMotor, &QPushButton::clicked, [=]() { this->_Mot->ReferenceRunX(); 
+  connect(Btn_ReferenceX, &QPushButton::clicked, [=]() { this->_Mot->ReferenceRunX(); 
   		stringstream helper;
 		helper << "Reference Run on X finished.";
 		string helper2 = helper.str();
@@ -275,7 +267,7 @@ this->_Mot->ConnectMotor();
 
   QPushButton *Btn_ReferenceY = new QPushButton("Reference Run Y", this);
   Btn_ReferenceY->setFixedSize(buttonSize);
-  connect(Btn_SearchMotor, &QPushButton::clicked, [=]() { this->_Mot->ReferenceRunY(); 
+  connect(Btn_ReferenceY, &QPushButton::clicked, [=]() { this->_Mot->ReferenceRunY(); 
   	  	stringstream helper;
 		helper << "Reference Run on Y finished.";
 		string helper2 = helper.str();
@@ -412,9 +404,8 @@ this->_Mot->ConnectMotor();
 
   //************* xyTable Action Grid *************//
   QGridLayout *xyLayout = new QGridLayout;
-  xyLayout->addWidget(Btn_SearchMotor, 0, 0, 1, 1);
-  xyLayout->addWidget(Btn_ReferenceX, 0, 1, 1, 1);
-  xyLayout->addWidget(Btn_ReferenceY, 0, 2, 1, 1);
+  xyLayout->addWidget(Btn_ReferenceX, 0, 0 ,1, 1);
+  xyLayout->addWidget(Btn_ReferenceY, 0, 1, 1, 1);
   xyLayout->addWidget(StartPosXLabel, 1, 0, 1, 1);
   xyLayout->addWidget(DisXLabel, 1, 1, 1, 1);
   xyLayout->addWidget(NumMeasXLabel, 1, 2, 1, 1);
