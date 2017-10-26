@@ -547,13 +547,13 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 	helper2 = helper.str();
 	this->ShowMessage(StatusBar, helper2, 2000);
 	helper.str("");
-	//sleep(30);
+	sleep(30);
 	cout << "Ten secounds..." << endl;
 	helper << "Ten secounds...";
 	helper2 = helper.str();
 	this->ShowMessage(StatusBar, helper2, 2000);
 	helper.str("");
-	//sleep(10);
+	sleep(10);
 
 	stringstream path;
 
@@ -648,6 +648,20 @@ void xyTable_App::xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *P
   this->_Mot->MoveAbsolute("x", this->_Mot->CalcStepsX(this->_Table->Get_x_StartPosition()));
   this->_Mot->MoveAbsolute("y", this->_Mot->CalcStepsY(this->_Table->Get_y_StartPosition()));
 
+  //********** Start of Measurement **********//
+
+  cout << "Now you have 40 seconds to leave the room!" << endl;
+  helper << "Now you have 40 seconds to leave the room!";
+  helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
+  helper.str("");
+  sleep(30);
+  cout << "Ten secounds..." << endl;
+  helper << "Ten secounds...";
+  helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
+  helper.str("");
+  sleep(10);
 
 	stringstream path;
 
