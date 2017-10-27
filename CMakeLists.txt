@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.2)
 
 project(XYTable)
-set(PROJECT_VERSION 0.0.0.0)
-set(PROJECT_BRIEF "\"No description\"")
+set(PROJECT_VERSION 1.0)
+set(PROJECT_BRIEF "\"Source Code to work with the xy Table\"")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
