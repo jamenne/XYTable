@@ -470,8 +470,8 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
 
   xyLayout->addWidget(Btn_ReferenceX, 0, 0 ,1, 1);
   xyLayout->addWidget(Btn_ReferenceY, 0, 1, 1, 1);
-  xyLayout->addWidget(MoveX, 0, 2, 1, 0.5);
-  xyLayout->addWidget(MoveY, 0, 3, 1, 0.5);
+  xyLayout->addWidget(MoveX, 0, 2, 1, 1);
+  xyLayout->addWidget(MoveY, 0, 3, 1, 1);
   xyLayout->addWidget(TestPosXLabel, 1, 0, 1, 1);
   xyLayout->addWidget(TestPosYLabel, 1, 1, 1, 1);
   xyLayout->addWidget(SleepLabel, 1, 2, 1, 2);
@@ -614,12 +614,12 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 
 	//********** Start of Measurement **********//
 
-	cout << "Now you have" << this->_Sleep << "seconds to leave the room!" << endl;
-  helper << "Now you have" << this->_Sleep << "seconds to leave the room!";
-  helper2 = helper.str();
-  this->ShowMessage(StatusBar, helper2, 2000);
-  helper.str("");
-  sleep(this->_Sleep);
+	cout << "Now you have " << this->_Sleep << " seconds to leave the room!" << endl;
+	helper << "Now you have " << this->_Sleep << " seconds to leave the room!";
+	helper2 = helper.str();
+	this->ShowMessage(StatusBar, helper2, 2000);
+	helper.str("");
+	sleep(this->_Sleep);
 
 	stringstream path;
 
@@ -716,8 +716,8 @@ void xyTable_App::xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *P
 
   //********** Start of Measurement **********//
 
-  cout << "Now you have" << this->_Sleep << "seconds to leave the room!" << endl;
-  helper << "Now you have" << this->_Sleep << "seconds to leave the room!";
+  cout << "Now you have " << this->_Sleep << " seconds to leave the room!" << endl;
+  helper << "Now you have " << this->_Sleep << " seconds to leave the room!";
   helper2 = helper.str();
   this->ShowMessage(StatusBar, helper2, 2000);
   helper.str("");
