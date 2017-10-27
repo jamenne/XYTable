@@ -43,4 +43,7 @@ class xyTable_App : public QWidget {
 		QVector<double> _Spec_y;
 		vector<vector<double> > _SpecData;
 		bool _ThreeLightMeas;
+		double _TestX;
+		double _TestY;
+		int _Sleep;
 };

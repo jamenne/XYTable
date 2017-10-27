@@ -48,9 +48,10 @@ xyTable_App::xyTable_App(unsigned char &Address, unsigned char &Status, int &Val
   _Spec_y()
 {
 
-this->_Mot->ConnectMotor();
+  this->_Mot->ConnectMotor();
 
   QSize buttonSize(200,20);
+  QSize buttonSize_small(75,20);
   QStatusBar *StatusBar = new QStatusBar();
   stringstream helper;
 
@@ -274,6 +275,51 @@ this->_Mot->ConnectMotor();
 		this->ShowMessage(StatusBar, helper2, 2000);													
   	});
 
+  // Test for positioning of Motor - just move to position
+  //
+  QLabel *TestPosXLabel = new QLabel(tr("Testposition X / mm:"));
+  QDoubleSpinBox *TestPosXBox = new QDoubleSpinBox;
+  TestPosXBox->setRange(0., 2500.);
+  TestPosXBox->setSingleStep(0.1);
+  TestPosXBox->setValue(0.00);
+  QObject::connect(TestPosXBox, QOverload< double >::of(&QDoubleSpinBox::valueChanged), [=](double newValue) {
+  this->_TestX = newValue;
+  stringstream helper;
+  helper << "Testposition on X set to  " << newValue << "mm";
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
+  });
+  //
+  QLabel *TestPosYLabel = new QLabel(tr("Testposition Y / mm:"));
+  QDoubleSpinBox *TestPosYBox = new QDoubleSpinBox;
+  TestPosYBox->setRange(0., 2500.);
+  TestPosYBox->setSingleStep(0.1);
+  TestPosYBox->setValue(0.00);
+  QObject::connect(TestPosYBox, QOverload< double >::of(&QDoubleSpinBox::valueChanged), [=](double newValue) {
+  this->_TestY = newValue;
+  stringstream helper;
+  helper << "Testposition on Y set to  " << newValue << "mm";
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
+  });
+  //
+  QPushButton *MoveX = new QPushButton("Move X", this);
+  QPushButton *MoveY = new QPushButton("Move Y", this);
+
+  MoveX->setFixedSize(buttonSize_small);
+  MoveY->setFixedSize(buttonSize_small);
+
+  connect(MoveX, &QPushButton::clicked, [=]() 
+        {                         
+          this->_Mot->MoveAbsolute("x", this->_Mot->CalcStepsX( this->_TestX ));
+        });
+
+  connect(MoveY, &QPushButton::clicked, [=]() 
+      {                         
+        this->_Mot->MoveAbsolute("y", this->_Mot->CalcStepsY( this->_TestY ));
+      });
+
+
   // Start xy-Table Measurement Button
   QPushButton *Start0 = new QPushButton("Start Measurement", this);
   QPushButton *Start1 = new QPushButton("Start Measurement", this);
@@ -294,7 +340,7 @@ this->_Mot->ConnectMotor();
   												});
 
   // Spin Boxes for XY Table Parameters
-  QLabel *StartPosXLabel = new QLabel(tr("Startpostion X / mm:"));
+  QLabel *StartPosXLabel = new QLabel(tr("Startposition X / mm:"));
   QDoubleSpinBox *StartPosXBox = new QDoubleSpinBox;
   StartPosXBox->setRange(0., 2500.);
   StartPosXBox->setSingleStep(0.1);
@@ -308,7 +354,7 @@ this->_Mot->ConnectMotor();
   this->ShowMessage(StatusBar, helper2, 2000);
 	});
 
-  QLabel *StartPosYLabel = new QLabel(tr("Startpostion Y / mm:"));
+  QLabel *StartPosYLabel = new QLabel(tr("Startposition Y / mm:"));
   QDoubleSpinBox *StartPosYBox = new QDoubleSpinBox;
   StartPosYBox->setRange(0., 190.);
   StartPosYBox->setSingleStep(0.01);
@@ -402,26 +448,52 @@ this->_Mot->ConnectMotor();
                                                       NumMeasYBox->setEnabled(false); });
 
 
+  // Sleep duration, for switching off the Light
+  QLabel *SleepLabel = new QLabel(tr("Seconds till Start of Measurement:"));
+  QSpinBox *SleepBox = new QSpinBox;
+  SleepBox->setRange(0, 100);
+  SleepBox->setSingleStep(1);
+  SleepBox->setValue(40);
+  this->_Sleep = 40;
+  QObject::connect(SleepBox, QOverload< int >::of(&QSpinBox::valueChanged), [=](int newValue) {
+  this->_Sleep = newValue; 
+  stringstream helper;
+  helper << "Sleep Seconds set to  " << newValue;
+  string helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
+  });
+
+
   //************* xyTable Action Grid *************//
   QGridLayout *xyLayout = new QGridLayout;
+
+
   xyLayout->addWidget(Btn_ReferenceX, 0, 0 ,1, 1);
   xyLayout->addWidget(Btn_ReferenceY, 0, 1, 1, 1);
-  xyLayout->addWidget(StartPosXLabel, 1, 0, 1, 1);
-  xyLayout->addWidget(DisXLabel, 1, 1, 1, 1);
-  xyLayout->addWidget(NumMeasXLabel, 1, 2, 1, 1);
-  xyLayout->addWidget(StartPosXBox, 2, 0, 1, 1);
-  xyLayout->addWidget(DisXBox, 2, 1, 1, 1);
-  xyLayout->addWidget(NumMeasXBox, 2, 2, 1, 1);
-  xyLayout->addWidget(StartPosYLabel, 3, 0, 1, 1);
-  xyLayout->addWidget(DisYLabel, 3, 1, 1, 1);
-  xyLayout->addWidget(NumMeasYLabel, 3, 2, 1, 1);
-  xyLayout->addWidget(StartPosYBox, 4, 0, 1, 1);
-  xyLayout->addWidget(DisYBox, 4, 1, 1, 1);
-  xyLayout->addWidget(NumMeasYBox, 4, 2, 1, 1);
-  xyLayout->addWidget(Btn_OnlyXAxis, 5, 0, 1, 1);
-  xyLayout->addWidget(Btn_XYAxis, 5, 1, 1, 1);
-  xyLayout->addWidget(MeasStart, 5, 2, 1, 1);
-
+  xyLayout->addWidget(MoveX, 0, 2, 1, 0.5);
+  xyLayout->addWidget(MoveY, 0, 3, 1, 0.5);
+  xyLayout->addWidget(TestPosXLabel, 1, 0, 1, 1);
+  xyLayout->addWidget(TestPosYLabel, 1, 1, 1, 1);
+  xyLayout->addWidget(SleepLabel, 1, 2, 1, 2);
+  xyLayout->addWidget(TestPosXBox, 2, 0, 1, 1);
+  xyLayout->addWidget(TestPosYBox, 2, 1, 1, 1);  
+  xyLayout->addWidget(SleepBox, 2, 2, 1, 2);
+  xyLayout->addWidget(StartPosXLabel, 3, 0, 1, 1);
+  xyLayout->addWidget(DisXLabel, 3, 1, 1, 1);
+  xyLayout->addWidget(NumMeasXLabel, 3, 2, 1, 2);
+  xyLayout->addWidget(StartPosXBox, 4, 0, 1, 1);
+  xyLayout->addWidget(DisXBox, 4, 1, 1, 1);
+  xyLayout->addWidget(NumMeasXBox, 4, 2, 1, 2);
+  xyLayout->addWidget(StartPosYLabel, 5, 0, 1, 1);
+  xyLayout->addWidget(DisYLabel, 5, 1, 1, 1);
+  xyLayout->addWidget(NumMeasYLabel, 5, 2, 1, 2);
+  xyLayout->addWidget(StartPosYBox, 6, 0, 1, 1);
+  xyLayout->addWidget(DisYBox, 6, 1, 1, 1);
+  xyLayout->addWidget(NumMeasYBox, 6, 2, 1, 2);
+  xyLayout->addWidget(Btn_OnlyXAxis, 7, 0, 1, 1);
+  xyLayout->addWidget(Btn_XYAxis, 7, 1, 1, 1);
+  xyLayout->addWidget(MeasStart, 7, 2, 1, 1);
+    
   xyGroup->setLayout(xyLayout);
 
   //************* QUIT *************//
@@ -433,10 +505,10 @@ this->_Mot->ConnectMotor();
   //********** Put Layout together **********//        
   QGridLayout *layout = new QGridLayout;
   layout->addWidget(LEDGroup, 0, 0, 1, 1);
-  layout->addWidget(xyGroup, 0, 1, 1, 1);
-  layout->addWidget(SpecGroup, 1, 0, 1, 2);
-  layout->addWidget(Btn_quit, 2, 0, 1, 2);
-  layout->addWidget(StatusBar, 3, 0, 1, 2);
+  layout->addWidget(xyGroup, 0, 1, 1, 2);
+  layout->addWidget(SpecGroup, 1, 0, 1, 3);
+  layout->addWidget(Btn_quit, 2, 0, 1, 3);
+  layout->addWidget(StatusBar, 3, 0, 1, 3);
   setLayout(layout);
 
   setWindowTitle(tr("xyTable Measurement"));
@@ -542,18 +614,12 @@ void xyTable_App::xyTableMeasurementOnlyXAxis(QStatusBar *StatusBar, QLineEdit *
 
 	//********** Start of Measurement **********//
 
-	cout << "Now you have 40 seconds to leave the room!" << endl;
-	helper << "Now you have 40 seconds to leave the room!";
-	helper2 = helper.str();
-	this->ShowMessage(StatusBar, helper2, 2000);
-	helper.str("");
-	sleep(30);
-	cout << "Ten secounds..." << endl;
-	helper << "Ten secounds...";
-	helper2 = helper.str();
-	this->ShowMessage(StatusBar, helper2, 2000);
-	helper.str("");
-	sleep(10);
+	cout << "Now you have" << this->_Sleep << "seconds to leave the room!" << endl;
+  helper << "Now you have" << this->_Sleep << "seconds to leave the room!";
+  helper2 = helper.str();
+  this->ShowMessage(StatusBar, helper2, 2000);
+  helper.str("");
+  sleep(this->_Sleep);
 
 	stringstream path;
 
@@ -650,18 +716,12 @@ void xyTable_App::xyTableMeasurementBothAxis(QStatusBar *StatusBar, QLineEdit *P
 
   //********** Start of Measurement **********//
 
-  cout << "Now you have 40 seconds to leave the room!" << endl;
-  helper << "Now you have 40 seconds to leave the room!";
+  cout << "Now you have" << this->_Sleep << "seconds to leave the room!" << endl;
+  helper << "Now you have" << this->_Sleep << "seconds to leave the room!";
   helper2 = helper.str();
   this->ShowMessage(StatusBar, helper2, 2000);
   helper.str("");
-  sleep(30);
-  cout << "Ten secounds..." << endl;
-  helper << "Ten secounds...";
-  helper2 = helper.str();
-  this->ShowMessage(StatusBar, helper2, 2000);
-  helper.str("");
-  sleep(10);
+  sleep(this->_Sleep);
 
 	stringstream path;
 
