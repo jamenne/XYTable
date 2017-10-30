@@ -96,6 +96,23 @@ make
 
 ![](img/xyTable_clean.png)
 
+4.) Only X axis measurement:
+* Apply a reference run if nessesary (carriages will move towards end switches to find zero position)
+* Choose `Only X-Axis-Measurement`
+* Choose `Startposition X / mm, Distance in X / mm` and `Number of Measurements in X`
+1. Test the X-Startposition with `Testposition X / mm` and button `Move X`
+2. Test the Y-Startposition with `Testposition Y / mm` and button `Move Y`
+* Choose a Spectrometer Measurement Mode:
+1. `Single` + `Start Measurement` - Just a snapshot, afterwards you can hit the `Plot` button to display spectrum (use it to find the correct current)
+2. `Dark + 1 Light` - At each position take a darkcount and a light measurement with the given current
+3. `Dark + 3 Light` - At each position take a darkcount and 3 light measurements with the given currents
+* Choose a current for the LED (3 currents if `Dark + 3 Light` Measurement Mode was chosen)
+* Choose a sleeping time, which you need, to leave the room and darken everything
+* Hit the `Start Measurement` button at the `XY Table`section to start actually the measurement
+
+
+![](img/xyTable_OnlyX.png)
+
 
 [1]: https://git.e5.physik.tu-dortmund.de/jmueller/LEDClass
 [2]: https://git.e5.physik.tu-dortmund.de/jmueller/SpectrometerClass
