@@ -9,6 +9,7 @@ To get the response of the scintillating fibre (or mat) a spectrometer is read o
 It is possible to do measurements in x and y direction as well as only in x direction e.g. to determine attenuation lengths.  
 Special mounting setups for the spectrometer allow as well a angular dependent measurement of the fibre response.
 
+The repository contains the source code as well as CMakeLists and a GUI version to operate such system.
 
 ## Requirements to run terminal program
 
