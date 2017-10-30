@@ -37,13 +37,19 @@ RS232 Currentsource:
 Install QT5:
 * QT5 uses different number format 
 * add to your `.bashrc`:  
-```bash  
+```bash
 export CMAKE_PREFIX_PATH=/usr/local/Qt-5.8.0/
 export LC_NUMERIC=en_US.UTF-8
 ```
 
 ## How to run the control
 
+```bash
+mkdir build
+cd build
+cmake -DBoost_NO_SYSTEM_PATHS=TRUE ..
+make -j
+```
 
 
 
