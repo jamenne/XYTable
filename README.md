@@ -13,9 +13,24 @@ The repository contains the source code as well as CMakeLists and a GUI version 
 
 ## Requirements to run terminal program
 
+Availability of the following libraries (author: Janine Müller):
+* [LEDClass][1]
+* [SpectrometerClass][2]
+* [MotorControl][3]
+* [RS232Communication][4]
+
 
 ## Requirements  to run GUI
 - QT5 (in .bashrc: export CMAKE_PREFIX_PATH=/usr/local/Qt-5.8.0/)
 - QT5 uses different number format (n .bashrc: export LC_NUMERIC=en_US.UTF-8)
 
 ## How to run the control
+
+
+
+
+
+[1] https://git.e5.physik.tu-dortmund.de/jmueller/LEDClass
+[2] https://git.e5.physik.tu-dortmund.de/jmueller/SpectrometerClass
+[3] https://git.e5.physik.tu-dortmund.de/jmueller/MotorControl
+[4] https://git.e5.physik.tu-dortmund.de/jmueller/RS232communication
