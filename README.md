@@ -94,6 +94,8 @@ make
 
 3.) A window is opening to control the xyTable.
 
+![](img/xyTable_clean.png)
+
 
 [1]: https://git.e5.physik.tu-dortmund.de/jmueller/LEDClass
 [2]: https://git.e5.physik.tu-dortmund.de/jmueller/SpectrometerClass
