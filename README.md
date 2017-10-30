@@ -33,8 +33,14 @@ RS232 Currentsource:
 * Make sure that your user is in group `dialout`
 
 ## Requirements  to run GUI
-- QT5 (in .bashrc: export CMAKE_PREFIX_PATH=/usr/local/Qt-5.8.0/)
-- QT5 uses different number format (n .bashrc: export LC_NUMERIC=en_US.UTF-8)
+
+Install QT5:
+* QT5 uses different number format 
+* add to your `.bashrc`:
+```
+export CMAKE_PREFIX_PATH=/usr/local/Qt-5.8.0/
+export LC_NUMERIC=en_US.UTF-8
+```
 
 ## How to run the control
 
