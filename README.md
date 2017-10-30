@@ -44,10 +44,7 @@ export LC_NUMERIC=en_US.UTF-8
 
 ## How to run the control
 
-```bash
-export CMAKE_PREFIX_PATH=/usr/local/Qt-5.8.0/
-export LC_NUMERIC=en_US.UTF-8
-```
+
 
 
 
