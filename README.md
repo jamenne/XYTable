@@ -30,7 +30,7 @@ Availability of the following libraries (author: Janine Müller):
 
 
 
-[1] https://git.e5.physik.tu-dortmund.de/jmueller/LEDClass
-[2] https://git.e5.physik.tu-dortmund.de/jmueller/SpectrometerClass
-[3] https://git.e5.physik.tu-dortmund.de/jmueller/MotorControl
-[4] https://git.e5.physik.tu-dortmund.de/jmueller/RS232communication
+[1]: https://git.e5.physik.tu-dortmund.de/jmueller/LEDClass
+[2]: https://git.e5.physik.tu-dortmund.de/jmueller/SpectrometerClass
+[3]: https://git.e5.physik.tu-dortmund.de/jmueller/MotorControl
+[4]: https://git.e5.physik.tu-dortmund.de/jmueller/RS232communication
