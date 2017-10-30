@@ -49,8 +49,50 @@ Get QCustomPlot:
 
 ## How to run the control
 
+### Terminal progamm
+
+1.) Compile source code:
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+2.) Execute it:
+
+```bash
+./bin/xyTableMain
+```
+
+3.) Follow instructions written in terminal.
 
 
+### GUI
+
+0.) Go to GUI folder
+
+```bash
+cd xyTable_gui
+```
+
+1.) Compile source code:
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+2.) Execute it:
+
+```bash
+./bin/xyTableGui
+```
+
+3.) A window is opening to control the xyTable.
 
 
 [1]: https://git.e5.physik.tu-dortmund.de/jmueller/LEDClass
