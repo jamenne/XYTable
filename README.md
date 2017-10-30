@@ -23,7 +23,7 @@ Driver of Hamamatsu Spectrometer:
 needs to be rebuilt everytime kernel is being updated
 * https://sourceforge.net/p/usbspecdrivers/wiki/Installation/
 * edit ```bash usbhspec.c``` such as (2 times)
-```bash
+```
 //static DEVICE_ATTR(gain, S_IWUGO | S_IRUGO, show_gain, set_gain);
 static DEVICE_ATTR(gain, 0660, show_gain, set_gain);
 ```
