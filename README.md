@@ -99,15 +99,18 @@ make
 4.) Only X axis measurement:
 1. Apply a reference run if nessesary (carriages will move towards end switches to find zero position)
 2. Choose `Only X-Axis-Measurement`
-3.  Choose `Startposition X / mm, Distance in X / mm` and `Number of Measurements in X`
+3.  Choose `Startposition X / mm`, `Distance in X / mm` and `Number of Measurements in X`
 	* Test the X-Startposition with `Testposition X / mm` and button `Move X`
 4. Choose a Spectrometer Measurement Mode:
 	*  `Single` + `Start Measurement` - Just a snapshot, afterwards you can hit the `Plot` button to display spectrum (use it to find the correct current)
 	* `Dark + 1 Light` - At each position take a darkcount and a light measurement with the given current
 	* `Dark + 3 Light` - At each position take a darkcount and 3 light measurements with the given currents
-5. Choose a current for the LED (3 currents if `Dark + 3 Light` Measurement Mode was chosen)
-6. Choose a sleeping time, which you need, to leave the room and darken everything
-7. Hit the `Start Measurement` button at the `XY Table`section to start actually the measurement
+5. If wanted: Specify path and name for the saved files in the `Spectrometer` section.
+	* Name will get a `_Spectrum_x=...txt` appended
+	* if not specified it will be saved at `~/data/Spectrometer/Spectrum_x=...txt`
+6. Choose a current for the LED (3 currents if `Dark + 3 Light` Measurement Mode was chosen)
+7. Choose a sleeping time, which you need, to leave the room and darken everything
+8. Hit the `Start Measurement` button at the `XY Table`section to start actually the measurement
 
 
 ![](img/xyTable_OnlyX.png)
@@ -115,17 +118,20 @@ make
 5.) XY axis measurement:
 1. Apply a reference run if nessesary (carriages will move towards end switches to find zero position)
 2. Choose `XY-Axis-Measurement`
-3.  Choose `Startposition X / mm, Distance in X / mm` and `Number of Measurements in X`
+3.  Choose `Startposition X / mm`, `Distance in X / mm` and `Number of Measurements in X`
 	* Test the X-Startposition with `Testposition X / mm` and button `Move X`
-4.  Choose `Startposition Y / mm, Distance in Y / mm` and `Number of Measurements in Y`
+4.  Choose `Startposition Y / mm`, `Distance in Y / mm` and `Number of Measurements in Y`
 	* Test the Y-Startposition with `Testposition Y / mm` and button `Move Y`
 5. Choose a Spectrometer Measurement Mode:
 	*  `Single` + `Start Measurement` - Just a snapshot, afterwards you can hit the `Plot` button to display spectrum (use it to find the correct current)
 	* `Dark + 1 Light` - At each position take a darkcount and a light measurement with the given current
 	* `Dark + 3 Light` - At each position take a darkcount and 3 light measurements with the given currents
-6. Choose a current for the LED (3 currents if `Dark + 3 Light` Measurement Mode was chosen)
-7. Choose a sleeping time, which you need, to leave the room and darken everything
-8. Hit the `Start Measurement` button at the `XY Table`section to start actually the measurement
+6. If wanted: Specify path and name for the saved files in the `Spectrometer` section.
+	* Name will get a `_Spectrum_x=.._y=...txt` appended
+	* if not specified it will be saved at `~/data/Spectrometer/Spectrum_x=.._y=...txt`
+7. Choose a current for the LED (3 currents if `Dark + 3 Light` Measurement Mode was chosen)
+8. Choose a sleeping time, which you need, to leave the room and darken everything
+9. Hit the `Start Measurement` button at the `XY Table` section to start actually the measurement
 
 
 ![](img/xyTable_xyMeas.png)
