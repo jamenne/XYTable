@@ -19,6 +19,14 @@ Availability of the following libraries (author: Janine Müller):
 * [MotorControl][3]
 * [RS232Communication][4]
 
+Driver of Hamamatsu Spectrometer:
+needs to be rebuilt everytime kernel is being updated
+* https://sourceforge.net/p/usbspecdrivers/wiki/Installation/
+* edit ```bash usbhspec.c``` such as (2 times)
+```bash
+//static DEVICE_ATTR(gain, S_IWUGO | S_IRUGO, show_gain, set_gain);
+static DEVICE_ATTR(gain, 0660, show_gain, set_gain);
+```
 
 ## Requirements  to run GUI
 - QT5 (in .bashrc: export CMAKE_PREFIX_PATH=/usr/local/Qt-5.8.0/)
