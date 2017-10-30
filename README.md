@@ -22,7 +22,7 @@ Availability of the following libraries (author: Janine Müller):
 Driver of Hamamatsu Spectrometer:
 needs to be rebuilt everytime kernel is being updated
 * https://sourceforge.net/p/usbspecdrivers/wiki/Installation/
-* edit `usbhspec.c` such as (2 times)
+* edit `usbhspec.c` such as (2 times):
 
 ```bash
 //static DEVICE_ATTR(gain, S_IWUGO | S_IRUGO, show_gain, set_gain);
@@ -44,12 +44,11 @@ export CMAKE_PREFIX_PATH=/usr/local/Qt-5.8.0/
 export LC_NUMERIC=en_US.UTF-8
 ```
 
+Get QCustomPlot:
+* https://github.com/dbzhang800/QCustomPlot
+
 ## How to run the control
 
-```bash
-export CMAKE_PREFIX_PATH=/usr/local/Qt-5.8.0/
-export LC_NUMERIC=en_US.UTF-8
-```
 
 
 
