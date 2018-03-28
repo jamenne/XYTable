@@ -1,5 +1,5 @@
 # Control of a XYTable
- Author: Janine Müller
+ Author: Janine Menne
 
 ## Description
 A XY-Table is a construction built from two linear tracks, which are mounted perpendicular. To allow a movement in two directoins (x and y) the second track is mounted on the carriage of the first track. The x axis has a traveling distance of 2500mm and the y axis of 200mm.  
@@ -13,7 +13,7 @@ The repository contains the source code as well as CMakeLists and a GUI version 
 
 ## Requirements to run terminal program
 
-Availability of the following libraries (author: Janine Müller):
+Availability of the following libraries (author: Janine Menne):
 * [LEDClass][1]
 * [SpectrometerClass][2]
 * [MotorControl][3]
