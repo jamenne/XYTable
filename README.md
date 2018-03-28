@@ -137,7 +137,7 @@ make
 ![](img/xyTable_xyMeas.png)
 
 
-[1]: https://git.e5.physik.tu-dortmund.de/jmueller/LEDClass
-[2]: https://git.e5.physik.tu-dortmund.de/jmueller/SpectrometerClass
-[3]: https://git.e5.physik.tu-dortmund.de/jmueller/MotorControl
-[4]: https://git.e5.physik.tu-dortmund.de/jmueller/RS232communication
+[1]: https://github.com/jamenne/LEDControl
+[2]: https://github.com/jamenne/HamamatsuMiniSpec
+[3]: https://github.com/jamenne/MotorControl
+[4]: https://github.com/jamenne/RS232Communication
